@@ -30,7 +30,7 @@
 
     <div class="login-container" id="register" hidden>
         <h2>Register User</h2>
-        <form action="./server/login_handler.php" method="POST">
+        <form action="./server/register_handler.php" method="POST">
             
             <div class="form-group">
                 <label for="username">Email:</label>
@@ -46,7 +46,6 @@
             
         </form>
     </div>
-
 
 </body>
 <script src="./scripts/login.js"></script>

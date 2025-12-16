@@ -1,21 +1,15 @@
 <?php
-
+session_start();
+require_once 'config.php';
 // 1. Check if the form was submitted using the POST method
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     
-    $servername = "localhost";
-    $username = "your_username";
-    $password = "your_password";
-    $dbname = "your_database";
-
 
     $username = htmlspecialchars($_POST['username']);
     $password = htmlspecialchars($_POST['password']);
     
-    // 3. Simple, insecure check (DO NOT USE IN PRODUCTION)
-    // You MUST replace this with a secure database lookup using prepared statements
-    // and password_verify() against a hashed password stored in a database.
+    
     $correct_username = "admin";
     $correct_password = "password123"; // In reality, this is a password hash!
 
