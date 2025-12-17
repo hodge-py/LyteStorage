@@ -21,30 +21,22 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     <div class="container">
         <div id='logout'>
             <form style="display:flex;" action="../server/logout_handler.php" method="POST">
-            <button id="logoutButton" type="submit">Logout</button>
-        </form>
-    </div>
-
-        <div id='title'>
-
-        <h1>Dashboard</h1>
-        
-
+                <button id="logoutButton" type="submit">Logout</button>
+            </form>
         </div>
 
 
         <div id="photo-container">
+
+
             
 
 
-
-
         </div>
-
-
 
 
 
     </div>
 </body>
+<script src="../scripts/dashboard.js"></script>
 </html>
