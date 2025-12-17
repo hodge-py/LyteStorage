@@ -20,7 +20,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
 <body>
 
     <div class="login-container">
-        <h2>User Login</h2>
+        <h2>LyteStorage</h2>
         <form action="./server/login_handler.php" method="POST">
             
             <div class="form-group">

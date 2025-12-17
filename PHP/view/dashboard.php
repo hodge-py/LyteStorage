@@ -15,33 +15,36 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #333;
-        }
-    </style>
+    <link rel="stylesheet" href="../static/css/dashboard.css">
 </head>
 <body>
     <div class="container">
-        <h1>Dashboard</h1>
-        <p>Welcome to your dashboard</p>
-        <form action="../server/logout_handler.php" method="POST">
-            <button type="submit">Logout</button>
+        <div id='logout'>
+            <form style="display:flex;" action="../server/logout_handler.php" method="POST">
+            <button id="logoutButton" type="submit">Logout</button>
         </form>
+    </div>
+
+        <div id='title'>
+
+        <h1>Dashboard</h1>
+        
+
+        </div>
+
+
+        <div id="photo-container">
+            
+
+
+
+
+        </div>
+
+
+
+
+
     </div>
 </body>
 </html>
