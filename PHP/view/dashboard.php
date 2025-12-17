@@ -33,8 +33,12 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
         </div>
 
 
-        <div>
-            <div>New Row</div>
+        <div id="photo-container">
+            
+
+
+
+
         </div>
 
 
