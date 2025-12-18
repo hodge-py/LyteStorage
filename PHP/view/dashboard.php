@@ -28,7 +28,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
         </div>
 
         <header class="main-header">
-            <div class="logo">My App</div>
+            <div class="logo"><b>LyteStorage</b></div>
             <button class="logout-btn" onclick="handleLogout()">Logout</button>
         </header>
 
@@ -39,6 +39,9 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
 
 
     </div>
+
+
+
 </body>
 <script src="../scripts/dashboard.js"></script>
 </html>

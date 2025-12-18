@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = htmlspecialchars($_POST['password']);
     
     
-    $sql = "SELECT email, password FROM users WHERE email = :username";
+    $sql = "SELECT id, email, password FROM users WHERE email = :username";
         
         try{
             $stmt = $pdo->prepare($sql);
@@ -31,6 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 //session_start();
                 $_SESSION['loggedin'] = true;
                 $_SESSION['username'] = $username;
+                $_SESSION['id'] = $user['id'];
 
                 header("Location: ../view/dashboard.php"); 
                 exit; 
