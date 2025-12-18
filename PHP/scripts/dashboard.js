@@ -10,3 +10,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     console.error('Error fetching PHP script:', error);
                 });
         });
+
+
+function handleLogout() {
+    if (confirm("Are you sure you want to logout?")) {
+       window.location.href = "../server/logout_handler.php";
+    }
+}

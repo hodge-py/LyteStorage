@@ -19,13 +19,6 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
 </head>
 <body>
     <div class="container">
-        <div id='logout'>
-            <form style="display:flex;" action="../server/logout_handler.php" method="POST">
-                <button id="logoutButton" type="submit">Logout</button>
-            </form>
-        </div>
-
-
         <div id="photo-container">
 
 
@@ -34,6 +27,15 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
 
         </div>
 
+        <header class="main-header">
+            <div class="logo">My App</div>
+            <button class="logout-btn" onclick="handleLogout()">Logout</button>
+        </header>
+
+        <label for="file-upload" class="floating-plus-btn" title="Upload Photo">
+            +
+        </label>
+        <input type="file" id="file-upload" accept="image/*" style="display: none;" multiple>
 
 
     </div>
