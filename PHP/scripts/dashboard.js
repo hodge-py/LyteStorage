@@ -17,3 +17,39 @@ function handleLogout() {
        window.location.href = "../server/logout_handler.php";
     }
 }
+
+
+const fileInput = document.querySelector('#file-upload');
+
+
+fileInput.addEventListener('change', async (event) => {
+    const files = event.target.files;
+    if (!files) return;
+    //console.log(files);
+    const formData = new FormData();
+
+    for (let i = 0; i < files.length; i++) {
+        formData.append('photos[]', files[i]);
+    }
+
+    //console.log(formData.getAll('photos[]'));
+
+  try {
+    // 4. Execute the POST request
+    const response = await fetch('../server/uploader.php', {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      console.log('Upload successful:', result);
+    } else {
+        console.log('here');
+      console.error('Server error:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Network error:', error);
+  }
+
+});
