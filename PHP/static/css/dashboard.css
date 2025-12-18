@@ -40,6 +40,8 @@ h1 {
 #photo-container{
     display: flex;
     flex-wrap: wrap;
+    row-gap: 3%;
+    column-gap: 1%;
 }
 
 .main-header {

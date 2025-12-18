@@ -1,10 +1,19 @@
 document.addEventListener('DOMContentLoaded', (event) => {
             // This runs after the main HTML is parsed
+            const photoContainer = document.getElementById('photo-container');
             fetch('../server/photo_grab.php')
-                .then(response => response.text())
+                .then(response => response.json())
                 .then(data => {
                     // Place the response from the PHP script into the page
-                    document.getElementById('photo-container').innerHTML = data;
+                    //document.getElementById('photo-container').innerHTML = data;
+                    for (let i = 0; i < data.length; i++) {
+                        const img = document.createElement('img');
+                        img.src = "../server/" + data[i]['filepath'];
+                        img.width = 200;
+                        img.height = 200;
+                        photoContainer.innerHTML += `<a href="${img.src}" target="_blank"><img src="${img.src}" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88);" width=200 height= 200></img></a>`;
+                    }
+                    console.log(data[0]['filepath']);
                 })
                 .catch(error => {
                     console.error('Error fetching PHP script:', error);
@@ -25,17 +34,13 @@ const fileInput = document.querySelector('#file-upload');
 fileInput.addEventListener('change', async (event) => {
     const files = event.target.files;
     if (!files) return;
-    //console.log(files);
     const formData = new FormData();
 
     for (let i = 0; i < files.length; i++) {
-        formData.append('photos[]', files[i]);
+        formData.append('files[]', files[i]);
     }
 
-    //console.log(formData.getAll('photos[]'));
-
   try {
-    // 4. Execute the POST request
     const response = await fetch('../server/uploader.php', {
       method: 'POST',
       body: formData,
