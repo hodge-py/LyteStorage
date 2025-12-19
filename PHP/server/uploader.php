@@ -13,6 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $uploaded = [];
     $errors = [];
     $fileCount = count($_FILES['files']['name']);
+    $capture_date = '';
 
     for ($i = 0; $i < $fileCount; $i++) {
         if ($_FILES['files']['error'][$i] === UPLOAD_ERR_OK) {
@@ -20,9 +21,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             try{
                 
                 $tmpPath = $_FILES['files']['tmp_name'][$i];
-                $exif_data = exif_read_data($tmpPath, 'ANY_TAG', true);
                 $newName = "images/" . uniqid() . '-' . basename($_FILES['files']['name'][$i]);
-                $capture_date = isset($exif_data['IFD0']['DateTime']) ? $exif_data['IFD0']['DateTime'] : 'N/A';
+                
+                $image_type = exif_imagetype($tmpPath);
+
+                if ($image_type !== false) {
+                    if ($image_type == IMAGETYPE_JPEG || $image_type == IMAGETYPE_TIFF_II || $image_type == IMAGETYPE_TIFF_MM) {
+                    $exif_data = exif_read_data($tmpPath, 'ANY_TAG', true);
+                    $capture_date = isset($exif_data['IFD0']['DateTime']) ? $exif_data['IFD0']['DateTime'] : date('Y-m-d H:i:s');
+                    } else {
+                    $capture_date = date('Y-m-d H:i:s');
+                    }
+                } else {
+                    $capture_date = date('Y-m-d H:i:s');
+                }
 
                 if (move_uploaded_file($tmpPath, $newName)) {
                     $uploaded[] = $newName;
