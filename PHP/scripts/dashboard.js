@@ -132,11 +132,11 @@ document.getElementById('btn-delete').addEventListener('click', async (e) => {
 
     if (confirm("Are you sure you want to delete this photo? This action cannot be undone.")) {
         try {
-          console.log(fullImg.src.replace("../server/", ""));
+          console.log(fullImg.src);
             const response = await fetch('../server/delete_photo.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ filepath: fullImg.src.replace("../server/", "") }),
+                body: JSON.stringify({ filepath: fullImg.src }),
             });
             if (response.ok) {
                 const result = await response.json();
