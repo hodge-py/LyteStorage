@@ -14,7 +14,9 @@ RUN echo "file_uploads = On" >> /usr/local/etc/php/conf.d/uploads.ini \
     && echo "max_execution_time = 6000000000000" >> /usr/local/etc/php/conf.d/uploads.ini
 
 RUN echo "max_file_uploads = 10000000000" >> /usr/local/etc/php/conf.d/uploads.ini
-# 3. (Optional but Recommended) Install mysqli as well, as some older PHP code relies on it
+
+RUN docker-php-ext-install exif
+
 RUN docker-php-ext-install mysqli
 
 # 4. Set the working directory (already done by the base image, but good practice)

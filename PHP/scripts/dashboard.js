@@ -56,7 +56,7 @@ fileInput.addEventListener('change', async (event) => {
 
       setTimeout(() => {
                 statusMsg.classList.add('fade');
-                
+                window.location.reload();
                 // 4. Fully hide after fade animation ends (500ms)
                 setTimeout(() => {
                     statusMsg.style.display = 'none';
