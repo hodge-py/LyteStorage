@@ -44,6 +44,13 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
        <div id="uploadStatus" class="status-msg"></div>
 
 
+       <div id="photo-viewer" class="modal">
+            <span class="close-viewer">&times;</span>
+            <img class="modal-content" id="full-image">
+            <div id="caption"></div>
+        </div>
+
+
 
 </body>
 <script src="../scripts/dashboard.js"></script>

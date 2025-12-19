@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     for (let i = 0; i < data.length; i++) {
                         const img = document.createElement('img');
                         img.src = "../server/" + data[i]['filepath'];
-                        photoContainer.innerHTML += `<a href="${img.src}" target="_blank"><img src="${img.src}" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 10%; width: 20vw; height: 20vh;"></img></a>`;
+                        photoContainer.innerHTML += `<img src="${img.src}" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh;"></img>`;
                     }
                     console.log(data[0]['filepath']);
                 })
@@ -76,4 +76,44 @@ fileInput.addEventListener('change', async (event) => {
     setTimeout(() => statusMsg.style.display = 'none', 2000);
   }
 
+});
+
+
+
+
+
+
+const modal = document.getElementById("photo-viewer");
+const fullImg = document.getElementById("full-image");
+const captionText = document.getElementById("caption");
+const closeBtn = document.querySelector(".close-viewer");
+
+// 1. Use Event Delegation: Listen for clicks on the entire content container
+document.getElementById('photo-container').addEventListener('click', function(e) {
+    // Check if what was clicked is an image inside a .post
+    if (e.target.tagName === 'IMG') {
+        
+        modal.style.display = "flex";
+        fullImg.src = e.target.src; // Use the current source of the clicked image
+        
+        /*
+        const parent = e.target.closest('.post');
+        const title = parent.querySelector('h2').innerText;
+        captionText.innerHTML = title;
+        */
+    }
+});
+
+closeBtn.onclick = function() {
+    modal.style.display = "none";
+}
+
+modal.onclick = function(e) {
+    if (e.target === modal) {
+        modal.style.display = "none";
+    }
+}
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === "Escape") modal.style.display = "none";
 });
