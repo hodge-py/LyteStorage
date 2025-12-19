@@ -90,11 +90,10 @@ const closeBtn = document.querySelector(".close-viewer");
 
 // 1. Use Event Delegation: Listen for clicks on the entire content container
 document.getElementById('photo-container').addEventListener('click', function(e) {
-    // Check if what was clicked is an image inside a .post
     if (e.target.tagName === 'IMG') {
         
         modal.style.display = "flex";
-        fullImg.src = e.target.src; // Use the current source of the clicked image
+        fullImg.src = e.target.src; 
         
         /*
         const parent = e.target.closest('.post');
@@ -116,4 +115,43 @@ modal.onclick = function(e) {
 
 document.addEventListener('keydown', (e) => {
     if (e.key === "Escape") modal.style.display = "none";
+});
+
+
+document.getElementById('btn-download').addEventListener('click', (e) => {
+    const link = document.createElement('a');
+    link.href = fullImg.src;
+    link.download = 'downloaded_image.jpg';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+});
+
+
+document.getElementById('btn-delete').addEventListener('click', async (e) => {
+
+    if (confirm("Are you sure you want to delete this photo? This action cannot be undone.")) {
+        try {
+          console.log(fullImg.src.replace("../server/", ""));
+            const response = await fetch('../server/delete_photo.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ filepath: fullImg.src.replace("../server/", "") }),
+            });
+            if (response.ok) {
+                const result = await response.json();
+                console.log('Delete successful:', result);
+                alert('Photo deleted successfully.');
+                modal.style.display = "none";
+                //window.location.reload();
+            } else {
+                console.error('Server error:', response.statusText);
+                alert('Failed to delete photo.');
+            }
+        } catch (error) {
+            console.error('Network error:', error);
+            alert('Error: Connection lost.');
+        }
+    }
+
 });

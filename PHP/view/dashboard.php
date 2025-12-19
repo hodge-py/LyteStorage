@@ -48,6 +48,10 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
             <span class="close-viewer">&times;</span>
             <img class="modal-content" id="full-image">
             <div id="caption"></div>
+            <div class="modal-toolbar">
+                <button id="btn-download" class="action-btn">Download</button>
+                <button id="btn-delete" class="action-btn delete">Delete</button>
+            </div>
         </div>
 
 
