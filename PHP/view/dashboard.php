@@ -40,6 +40,9 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
 
     </div>
 
+    
+       <div id="uploadStatus" class="status-msg"></div>
+
 
 
 </body>

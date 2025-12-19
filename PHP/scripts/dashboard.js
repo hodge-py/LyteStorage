@@ -9,9 +9,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     for (let i = 0; i < data.length; i++) {
                         const img = document.createElement('img');
                         img.src = "../server/" + data[i]['filepath'];
-                        img.width = 200;
-                        img.height = 200;
-                        photoContainer.innerHTML += `<a href="${img.src}" target="_blank"><img src="${img.src}" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88);" width=200 height= 200></img></a>`;
+                        photoContainer.innerHTML += `<a href="${img.src}" target="_blank"><img src="${img.src}" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 10%; width: 20vw; height: 20vh;"></img></a>`;
                     }
                     console.log(data[0]['filepath']);
                 })
@@ -29,6 +27,7 @@ function handleLogout() {
 
 
 const fileInput = document.querySelector('#file-upload');
+const statusMsg = document.getElementById('uploadStatus');
 
 
 fileInput.addEventListener('change', async (event) => {
@@ -39,6 +38,10 @@ fileInput.addEventListener('change', async (event) => {
     for (let i = 0; i < files.length; i++) {
         formData.append('files[]', files[i]);
     }
+    statusMsg.textContent = 'Uploading...';
+    statusMsg.style.display = 'block';
+
+    setTimeout(() => statusMsg.classList.add('show'), 10);
 
   try {
     const response = await fetch('../server/uploader.php', {
@@ -49,12 +52,28 @@ fileInput.addEventListener('change', async (event) => {
     if (response.ok) {
       const result = await response.json();
       console.log('Upload successful:', result);
+      statusMsg.textContent = 'Upload successful!';
+
+      setTimeout(() => {
+                statusMsg.classList.add('fade');
+                
+                // 4. Fully hide after fade animation ends (500ms)
+                setTimeout(() => {
+                    statusMsg.style.display = 'none';
+                    statusMsg.classList.remove('show', 'fade');
+                }, 500);
+            }, 1500);
+
     } else {
-        console.log('here');
+      console.log('here');
+      statusMsg.textContent = 'Upload failed.';
       console.error('Server error:', response.statusText);
+      setTimeout(() => statusMsg.style.display = 'none', 2000);
     }
   } catch (error) {
     console.error('Network error:', error);
+    statusMsg.textContent = "Error: Connection lost.";
+    setTimeout(() => statusMsg.style.display = 'none', 2000);
   }
 
 });

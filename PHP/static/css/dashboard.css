@@ -3,7 +3,6 @@ body {
     background-color: #1D63ED; 
         display: flex;
         justify-content: center;
-        height: 100vh;
 }
 .container {
     width: 95%;
@@ -40,8 +39,9 @@ h1 {
 #photo-container{
     display: flex;
     flex-wrap: wrap;
-    row-gap: 3%;
+    row-gap: 10%;
     column-gap: 1%;
+    justify-content: center;
 }
 
 .main-header {
@@ -107,4 +107,36 @@ transition: transform 0.2s, background-color 0.2s;
 .floating-plus-btn:hover {
 background-color: #0056b3;
 transform: scale(1.1); 
+}
+
+.status-msg {
+    /* Positioning */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centers the element perfectly */
+    z-index: 9999; /* Ensures it stays on top of everything else */
+
+    /* Aesthetics */
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px 40px;
+    border-radius: 8px;
+    font-family: sans-serif;
+    font-size: 1.2rem;
+    pointer-events: none; /* Prevents the box from blocking clicks when fading */
+    
+    /* Animation logic */
+    display: none; /* Keep it out of the DOM flow until needed */
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.status-msg.show {
+    display: block;
+    opacity: 1;
+}
+
+.status-msg.fade {
+    opacity: 0;
 }
