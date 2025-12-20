@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ];
 
         if ($stmt->execute($data)) {
-            echo json_encode(['status' => 'success', 'message' => 'Photo deleted successfully.']);
+            echo json_encode(['status' => 'success', 'message' => $filepath . ' deleted successfully.']);
         } else {
             echo json_encode(['status' => 'error', 'message' => 'Failed to delete photo from database.']);
         }

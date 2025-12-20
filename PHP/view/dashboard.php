@@ -27,15 +27,30 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
 
         </div>
 
-        <header class="main-header">
+         <div id="video-container" hidden>
+
+
+            
+
+
+        </div>
+
+       <header class="main-header">
             <div class="logo"><b>LyteStorage</b></div>
+
+            <div class="view-toggle">
+                <button id="view-photos" class="toggle-btn active" onclick="switchView('photos')">Photos</button>
+                <button id="view-videos" class="toggle-btn" onclick="switchView('videos')">Videos</button>
+            </div>
+
             <button class="logout-btn" onclick="handleLogout()">Logout</button>
         </header>
+
 
         <label for="file-upload" class="floating-plus-btn" title="Upload Photo">
             +
         </label>
-        <input type="file" id="file-upload" accept="image/*" style="display: none;" multiple>
+        <input type="file" id="file-upload" accept="image/*, video/*" style="display: none;" multiple>
 
 
     </div>

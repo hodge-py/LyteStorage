@@ -76,6 +76,43 @@ background-color: #d32f2f;
 }
 
 
+.view-toggle {
+    display: flex;
+    gap: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 4px;
+    border-radius: 8px;
+}
+
+.toggle-btn {
+    background: transparent;
+    border: none;
+    color: #ccc;
+    padding: 8px 20px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: 0.3s;
+    font-weight: 600;
+}
+
+.toggle-btn.active {
+    background: #3498db; /* Blue highlight for active state */
+    color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.toggle-btn:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+
+
+
+
+
+
+
+
 body {
 padding-top: 80px; 
 }

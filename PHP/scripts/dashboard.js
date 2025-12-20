@@ -1,15 +1,21 @@
 document.addEventListener('DOMContentLoaded', (event) => {
             // This runs after the main HTML is parsed
             const photoContainer = document.getElementById('photo-container');
+            const videoContainer = document.getElementById('video-container');
             fetch('../server/photo_grab.php')
                 .then(response => response.json())
                 .then(data => {
-                    // Place the response from the PHP script into the page
-                    //document.getElementById('photo-container').innerHTML = data;
+                  const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.bmp'];
+                  const videoExtensions = ['.mp4', '.mkv', '.avi', '.mov', '.wmv', '.flv', '.webm', '.mpg', '.mpeg'];
                     for (let i = 0; i < data.length; i++) {
                         const img = document.createElement('img');
                         img.src = "../server/" + data[i]['filepath'];
-                        photoContainer.innerHTML += `<img src="${img.src}" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh;"></img>`;
+                        var extension = data[i]['filepath'].split('.').pop().toLowerCase();
+                         if (videoExtensions.includes('.' + extension)) {
+                            videoContainer.innerHTML += `<video controls style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh;"><source src="${img.src}"></video>`;
+                        }  else if (imageExtensions.includes('.' + extension)) {
+                            photoContainer.innerHTML += `<img src="${img.src}" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh;"></img>`;
+                        }
                     }
                     console.log(data[0]['filepath']);
                 })
@@ -23,6 +29,23 @@ function handleLogout() {
     if (confirm("Are you sure you want to logout?")) {
        window.location.href = "../server/logout_handler.php";
     }
+}
+
+
+function switchView(view) {
+    document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
+    
+    if (view === 'photos') {
+        document.getElementById('view-photos').classList.add('active');
+        document.getElementById('photo-container').style.visibility = 'visible';
+        document.getElementById('video-container').style.visibility = 'hidden';
+    } else {
+        document.getElementById('view-videos').classList.add('active');
+        document.getElementById('photo-container').style.visibility = 'hidden';
+        document.getElementById('video-container').style.visibility = 'visible';
+    }
+    console.log("Switching view to: " + view);
+
 }
 
 
