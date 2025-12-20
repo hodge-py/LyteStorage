@@ -153,16 +153,21 @@ document.getElementById('video-container').addEventListener('click', function(e)
 
 closeBtn.onclick = function() {
     modal.style.display = "none";
+    fullVideo.pause();
 }
 
 modal.onclick = function(e) {
     if (e.target === modal) {
         modal.style.display = "none";
+        fullVideo.pause();
     }
 }
 
 document.addEventListener('keydown', (e) => {
-    if (e.key === "Escape") modal.style.display = "none";
+    if (e.key === "Escape"){ 
+      modal.style.display = "none";
+      fullVideo.pause();
+    }
 });
 
 
