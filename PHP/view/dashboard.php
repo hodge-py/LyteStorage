@@ -27,11 +27,8 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
 
         </div>
 
-         <div id="video-container" hidden>
-
-
-            
-
+         <div id="video-container">
+           
 
         </div>
 
@@ -62,12 +59,15 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
        <div id="photo-viewer" class="modal">
             <span class="close-viewer">&times;</span>
             <img class="modal-content" id="full-image">
+            <video style="display: none;" class="modal-content" id="full-video" controls><source></video>
             <div id="caption"></div>
             <div class="modal-toolbar">
                 <button id="btn-download" class="action-btn">Download</button>
                 <button id="btn-delete" class="action-btn delete">Delete</button>
             </div>
         </div>
+
+        
 
 
 

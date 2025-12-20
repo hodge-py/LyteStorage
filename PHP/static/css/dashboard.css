@@ -43,6 +43,13 @@ h1 {
     justify-content: center;
 }
 
+#video-container{
+    display: none;
+    flex-wrap: wrap;
+    column-gap: 1%;
+    justify-content: center;
+}
+
 .main-header {
 position: fixed;
 top: 0;

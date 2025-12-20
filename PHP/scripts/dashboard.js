@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                         img.src = "../server/" + data[i]['filepath'];
                         var extension = data[i]['filepath'].split('.').pop().toLowerCase();
                          if (videoExtensions.includes('.' + extension)) {
-                            videoContainer.innerHTML += `<video controls style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh;"><source src="${img.src}"></video>`;
+                            videoContainer.innerHTML += `<video muted style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh;"><source src="${img.src}"></video>`;
                         }  else if (imageExtensions.includes('.' + extension)) {
                             photoContainer.innerHTML += `<img src="${img.src}" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh;"></img>`;
                         }
@@ -37,12 +37,12 @@ function switchView(view) {
     
     if (view === 'photos') {
         document.getElementById('view-photos').classList.add('active');
-        document.getElementById('photo-container').style.visibility = 'visible';
-        document.getElementById('video-container').style.visibility = 'hidden';
+        document.getElementById('photo-container').style.display = 'flex';
+        document.getElementById('video-container').style.display = 'none';
     } else {
         document.getElementById('view-videos').classList.add('active');
-        document.getElementById('photo-container').style.visibility = 'hidden';
-        document.getElementById('video-container').style.visibility = 'visible';
+        document.getElementById('photo-container').style.display = 'none';
+        document.getElementById('video-container').style.display = 'flex';
     }
     console.log("Switching view to: " + view);
 
@@ -113,9 +113,12 @@ const closeBtn = document.querySelector(".close-viewer");
 
 // 1. Use Event Delegation: Listen for clicks on the entire content container
 document.getElementById('photo-container').addEventListener('click', function(e) {
+  console.log(e.target.tagName);
     if (e.target.tagName === 'IMG') {
         
         modal.style.display = "flex";
+        document.getElementById('full-video').style.display = "none";
+        document.getElementById('full-image').style.display = "block";
         fullImg.src = e.target.src; 
         
         /*
@@ -124,7 +127,29 @@ document.getElementById('photo-container').addEventListener('click', function(e)
         captionText.innerHTML = title;
         */
     }
+
 });
+
+const fullVideo = document.getElementById("full-video");
+
+document.getElementById('video-container').addEventListener('click', function(e) {
+  console.log(e.target.tagName);
+    if (e.target.tagName === 'VIDEO') {
+        
+        modal.style.display = "flex";
+        fullVideo.src = e.target.querySelector('source').src; 
+        document.getElementById('full-video').style.display = "block";
+        document.getElementById('full-image').style.display = "none";
+        
+        /*
+        const parent = e.target.closest('.post');
+        const title = parent.querySelector('h2').innerText;
+        captionText.innerHTML = title;
+        */
+    }
+
+});
+
 
 closeBtn.onclick = function() {
     modal.style.display = "none";
