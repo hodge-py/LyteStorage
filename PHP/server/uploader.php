@@ -19,9 +19,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($_FILES['files']['error'][$i] === UPLOAD_ERR_OK) {
 
             try{
-                
+                $uniqueId = uniqid();
                 $tmpPath = $_FILES['files']['tmp_name'][$i];
-                $newName = "images/" . uniqid() . '-' . basename($_FILES['files']['name'][$i]);
+                $newName = "images/" . $uniqueId . '-' . basename($_FILES['files']['name'][$i]);
                 
                 $image_type = exif_imagetype($tmpPath);
 
@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 $data = [
                     'id' => $_SESSION['id'],
-                    'filename' => $_FILES['files']['name'][$i],
+                    'filename' => $uniqueId . "-" . $_FILES['files']['name'][$i],
                     'filepath' => $newName,
                     'filesize' => $_FILES['files']['size'][$i],
                     'capture_date' => $capture_date

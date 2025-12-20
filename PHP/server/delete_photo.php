@@ -13,22 +13,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($data['filepath'])) {
         $filepath = $data['filepath'];
 
-        $filepath = "images/" . basename($filepath);
+        $fileName = basename($filepath);
 
         if (file_exists($filepath)) {
             unlink($filepath);
         }
 
-        $sql = "DELETE FROM photos WHERE user_id = :id AND filepath = :filepath";
+        $sql = "DELETE FROM photos WHERE user_id = :id AND filename = :filename";
         $stmt = $pdo->prepare($sql);
 
         $data = [
             'id' => $_SESSION['id'],
-            'filepath' => $filepath
+            'filename' => $filepath
         ];
 
+        $records = $stmt->rowCount();
+
         if ($stmt->execute($data)) {
-            echo json_encode(['status' => 'success', 'message' => $filepath . ' deleted successfully.']);
+            echo json_encode(['status' => 'success', 'message' => json_encode($records). $fileName . $_SESSION['id'] . ' deleted successfully.']);
         } else {
             echo json_encode(['status' => 'error', 'message' => 'Failed to delete photo from database.']);
         }
