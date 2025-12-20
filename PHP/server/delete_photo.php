@@ -16,8 +16,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $fileName = basename($filepath);
 
         if (file_exists($filepath)) {
-            unlink($filepath);
+            if(unlink($filepath)) {
+                
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Error deleting file from server.']);
+                exit;
         }
+    }
 
         $sql = "DELETE FROM photos WHERE user_id = :id AND filename = :filename";
         $stmt = $pdo->prepare($sql);
