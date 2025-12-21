@@ -17,11 +17,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     for ($i = 0; $i < $fileCount; $i++) {
         if ($_FILES['files']['error'][$i] === UPLOAD_ERR_OK) {
+            
+            $sqlFile = "SELECT * FROM photos WHERE user_id = :id AND filename = :filename";
+            $stmtFile = $pdo->prepare($sqlFile);
+            $dataFile = [
+                'id' => $_SESSION['id'],
+                'filename' => $_FILES['files']['name'][$i]
+            ];
+            $stmtFile->execute($dataFile);
+            $existingFile = $stmtFile->fetch(PDO::FETCH_ASSOC);
+
+            if ($existingFile) {
+                $errors[] = "File already exists: " . $_FILES['files']['name'][$i];
+                continue; // Skip to the next file
+            }
+            else{
 
             try{
                 $uniqueId = uniqid();
                 $tmpPath = $_FILES['files']['tmp_name'][$i];
-                $newName = "images/" . $uniqueId . '-' . basename($_FILES['files']['name'][$i]);
+                $newName = "images/" .  basename($_FILES['files']['name'][$i]);
                 
                 $image_type = exif_imagetype($tmpPath);
 
@@ -46,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 $data = [
                     'id' => $_SESSION['id'],
-                    'filename' => $uniqueId . "-" . $_FILES['files']['name'][$i],
+                    'filename' => $_FILES['files']['name'][$i],
                     'filepath' => $newName,
                     'filesize' => $_FILES['files']['size'][$i],
                     'capture_date' => $capture_date
@@ -60,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $errors[] = "Database error for file: " . $_FILES['files']['name'][$i] . " - " . $e->getMessage();
         }
 
-
+    }
         }
     }
 

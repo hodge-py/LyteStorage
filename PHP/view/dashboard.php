@@ -43,9 +43,14 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
             <button class="logout-btn" onclick="handleLogout()">Logout</button>
         </header>
 
+        <label for="sync-upload" class="floating-sync" title="Upload Photo">
+            <b>Sync</b>
+        </label>
+        <input type="file" id="sync-upload" accept="image/*, video/*" style="display: none;" webkitdirectory directory multiple>
+
 
         <label for="file-upload" class="floating-plus-btn" title="Upload Photo">
-            +
+            <b>+</b>
         </label>
         <input type="file" id="file-upload" accept="image/*, video/*" style="display: none;" multiple>
 
@@ -66,6 +71,8 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
                 <button id="btn-delete" class="action-btn delete">Delete</button>
             </div>
         </div>
+
+
 
         
 

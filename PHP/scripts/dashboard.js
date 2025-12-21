@@ -104,7 +104,54 @@ fileInput.addEventListener('change', async (event) => {
 });
 
 
+document.getElementById('sync-upload').addEventListener('change', async (e) => {
+   
+    const files = e.target.files;
+    if (!files) return;
+    const formData = new FormData();
 
+    for (let i = 0; i < files.length; i++) {
+        formData.append('files[]', files[i]);
+    }
+    statusMsg.textContent = 'Uploading...';
+    statusMsg.style.display = 'block';
+
+    setTimeout(() => statusMsg.classList.add('show'), 10);
+
+  try {
+    const response = await fetch('../server/uploader.php', {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      console.log('Upload successful:', result);
+      statusMsg.textContent = 'Upload successful!';
+
+      setTimeout(() => {
+                statusMsg.classList.add('fade');
+                window.location.reload();
+                // 4. Fully hide after fade animation ends (500ms)
+                setTimeout(() => {
+                    statusMsg.style.display = 'none';
+                    statusMsg.classList.remove('show', 'fade');
+                }, 500);
+            }, 1500);
+
+    } else {
+      console.log('here');
+      statusMsg.textContent = 'Upload failed.';
+      console.error('Server error:', response.statusText);
+      setTimeout(() => statusMsg.style.display = 'none', 2000);
+    }
+  } catch (error) {
+    console.error('Network error:', error);
+    statusMsg.textContent = "Error: Connection lost.";
+    setTimeout(() => statusMsg.style.display = 'none', 2000);
+  }
+
+});
 
 
 
@@ -115,7 +162,6 @@ const closeBtn = document.querySelector(".close-viewer");
 
 // 1. Use Event Delegation: Listen for clicks on the entire content container
 document.getElementById('photo-container').addEventListener('click', function(e) {
-  console.log(e.target.tagName);
     if (e.target.tagName === 'IMG') {
         
         modal.style.display = "flex";
