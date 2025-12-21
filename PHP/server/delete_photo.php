@@ -15,37 +15,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $fileName = basename($filepath);
 
-        if (file_exists($filepath)) {
-            if(unlink($filepath)) {
-                
-            } else {
-                echo json_encode(['status' => 'error', 'message' => 'Error deleting file from server.']);
-                exit;
-        }
-    }
-
-        $sql = "DELETE FROM photos WHERE user_id = :id AND filename = :filename";
-        $stmt = $pdo->prepare($sql);
-
-        $data = [
+        $stmt = $pdo->prepare("SELECT * FROM photos WHERE user_id = :id AND filename = :filename");
+        $stmt->execute([
             'id' => $_SESSION['id'],
-            'filename' => $filepath
-        ];
+            'filename' => $fileName
+        ]);
+        $photo = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $records = $stmt->rowCount();
 
-        if ($stmt->execute($data)) {
-            echo json_encode(['status' => 'success', 'message' => json_encode($records). $fileName . $_SESSION['id'] . ' deleted successfully.']);
+        if ($photo) {
+
+            $sql2 = "DELETE FROM photos WHERE user_id = :id AND filename = :filename";
+            $stmt2 = $pdo->prepare($sql2);
+            $data2 = [
+                'id' => $_SESSION['id'],
+                'filename' => $fileName
+            ];
+
+            if ($stmt2->execute($data2)) {
+                if (file_exists($filepath)) {
+                    unlink($filepath);
+                }
+                echo json_encode(['status' => 'success', 'message' => 'Photo deleted successfully.']);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Failed to delete photo from database.']);
+            }
+           
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'Failed to delete photo from database.']);
+            echo json_encode(['status' => 'error', 'message' => 'Photo not found.']);
         }
-    } else {
-        echo json_encode(['status' => 'error', 'message' => 'Filepath not provided.']);
-    }
+        
 } else {
     echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
 }
 
+}
 
 
 

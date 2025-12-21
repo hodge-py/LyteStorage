@@ -139,12 +139,11 @@ document.getElementById('sync-upload').addEventListener('change', async (e) => {
       setTimeout(() => {
                 statusMsg.classList.add('fade');
                 window.location.reload();
-                // 4. Fully hide after fade animation ends (500ms)
                 setTimeout(() => {
                     statusMsg.style.display = 'none';
                     statusMsg.classList.remove('show', 'fade');
-                }, 500);
-            }, 1500);
+                }, 300);
+            }, 500);
 
     } else {
       console.log('here');
@@ -262,7 +261,7 @@ document.getElementById('btn-delete').addEventListener('click', async (e) => {
                 console.log('Delete successful:', result);
                 alert('Photo deleted successfully.');
                 modal.style.display = "none";
-                //window.location.reload();
+                window.location.reload();
             } else {
                 console.error('Server error:', response.statusText);
                 alert('Failed to delete photo.');
