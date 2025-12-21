@@ -33,7 +33,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
         </div>
 
        <header class="main-header">
-            <div class="logo"><b>LyteStorage</b></div>
+            <div class="logo"><b>LyteStorage</b><img src="../../lytestorageicon.png"></img></div>
 
             <div class="view-toggle">
                 <button id="view-photos" class="toggle-btn active" onclick="switchView('photos')">Photos</button>
