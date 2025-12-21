@@ -46,7 +46,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
         <label for="sync-upload" class="floating-sync" title="Upload Photo">
             <b>Sync</b>
         </label>
-        <input type="file" id="sync-upload" accept="image/*, video/*" style="display: none;" webkitdirectory directory multiple>
+        <input type="file" id="sync-upload" accept="image/*, video/*" style="display: none;" webkitdirectory directory>
 
 
         <label for="file-upload" class="floating-plus-btn" title="Upload Photo">

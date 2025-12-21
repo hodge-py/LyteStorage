@@ -107,11 +107,18 @@ fileInput.addEventListener('change', async (event) => {
 document.getElementById('sync-upload').addEventListener('change', async (e) => {
    
     const files = e.target.files;
+    const acceptedTypes = ['image/', 'video/'];
     if (!files) return;
     const formData = new FormData();
 
     for (let i = 0; i < files.length; i++) {
-        formData.append('files[]', files[i]);
+        const fileType = files[i].type;
+        if (!acceptedTypes.some(type => fileType.startsWith(type))) {
+            continue;
+        }
+        else{
+            formData.append('files[]', files[i]);
+        }
     }
     statusMsg.textContent = 'Uploading...';
     statusMsg.style.display = 'block';
