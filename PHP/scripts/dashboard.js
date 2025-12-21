@@ -46,7 +46,7 @@ function switchView(view) {
         document.getElementById('photo-container').style.display = 'none';
         document.getElementById('video-container').style.display = 'flex';
     }
-    console.log("Switching view to: " + view);
+    //console.log("Switching view to: " + view);
 
 }
 
@@ -251,7 +251,7 @@ document.getElementById('btn-delete').addEventListener('click', async (e) => {
 
     if (confirm("Are you sure you want to delete this photo? This action cannot be undone.")) {
         try {
-          console.log(fullImg.src);
+          //console.log(fullImg.src);
             const response = await fetch('../server/delete_photo.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
