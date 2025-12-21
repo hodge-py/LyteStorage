@@ -12,6 +12,7 @@
 ```
 https://github.com/hodge-py/LyteStorage.git
 ```
+
 Open the terminal and navigate to the folder containing the repo.
 
 ```
