@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                         img.src = "../server/" + data[i]['filepath'];
                         var extension = data[i]['filepath'].split('.').pop().toLowerCase();
                          if (videoExtensions.includes('.' + extension)) {
-                            videoContainer.innerHTML += `<video loading="lazy" muted style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh;"><source src="${img.src}"></video>`;
+                            videoContainer.innerHTML += `<video loading="lazy" muted style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh; background-color: #24292e;"><source src="${img.src}"></video>`;
                         }  else if (imageExtensions.includes('.' + extension)) {
                             photoContainer.innerHTML += `<img src="${img.src}" alt="${img.src}" loading="lazy" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh;"></img>`;
                         }
