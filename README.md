@@ -6,20 +6,21 @@
 
 <h3 align="center"><b>Light-weight self-hosted photo storage management system - Specialized for single board computers</b></h3>
 
-
 ## Installation Instructions
 
-```
+Download a zip of the repo or clone the repo.
+
+```terminal
 https://github.com/hodge-py/LyteStorage.git
 ```
 
 Open the terminal and navigate to the folder containing the repo.
 
-```
+```terminal
 docker-compose build --no-cache
 ```
 
-```
+```terminal
 docker-compose up -d
 ```
 
