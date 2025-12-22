@@ -89,6 +89,7 @@ background-color: #d32f2f;
     background: rgba(255, 255, 255, 0.1);
     padding: 4px;
     border-radius: 8px;
+    justify-content: center;
 }
 
 .toggle-btn {
@@ -306,4 +307,27 @@ transform: scale(1.1);
     .floating-sync {
         bottom: 17%;
     }
+}
+
+#icon {
+    width: 11%;
+    height: 11%;
+    cursor: default;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo, 
+.logout-wrapper {
+    flex: 1; 
+    display: flex;
+    align-items: center;
+}
+
+.logout-wrapper {
+    justify-content: flex-end; 
 }
