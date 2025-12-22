@@ -1,0 +1,42 @@
+services:
+  web:
+    # --- CHANGE THIS LINE ---
+    # Instead of 'image: php:8.3-apache', we use 'build: .' 
+    # The '.' tells Docker Compose to look for the Dockerfile in the current directory.
+    build: . 
+    # ------------------------
+    
+    ports:
+      - "80:80"
+    volumes:
+      - ./PHP:/var/www/html
+    environment:
+      MYSQL_DATABASE: my_database
+      MYSQL_USER: my_user
+      MYSQL_PASSWORD: my_password
+      MYSQL_ROOT_PASSWORD: root_password # Not usually needed for the PHP service
+
+  db:
+    image: mariadb:lts 
+    volumes:
+      - ./MariaDB:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: my_database
+      MYSQL_USER: my_user
+      MYSQL_PASSWORD: my_password
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db # IMPORTANT: This connects phpMyAdmin to the 'db' service
+      MYSQL_ROOT_PASSWORD: root_password

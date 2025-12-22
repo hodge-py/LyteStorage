@@ -1,0 +1,281 @@
+document.addEventListener('DOMContentLoaded', (event) => {
+            // This runs after the main HTML is parsed
+            const photoContainer = document.getElementById('photo-container');
+            const videoContainer = document.getElementById('video-container');
+            fetch('../server/photo_grab.php')
+                .then(response => response.json())
+                .then(data => {
+                  const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.bmp'];
+                  const videoExtensions = ['.mp4', '.mkv', '.avi', '.mov', '.wmv', '.flv', '.webm', '.mpg', '.mpeg'];
+                    for (let i = 0; i < data.length; i++) {
+                        const img = document.createElement('img');
+                        img.src = "../server/" + data[i]['filepath'];
+                        var extension = data[i]['filepath'].split('.').pop().toLowerCase();
+                         if (videoExtensions.includes('.' + extension)) {
+                            videoContainer.innerHTML += `<video loading="lazy" muted style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh; background-color: #24292e;"><source src="${img.src}"></video>`;
+                        }  else if (imageExtensions.includes('.' + extension)) {
+                            photoContainer.innerHTML += `<img src="${img.src}" alt="${img.src}" loading="lazy" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh;"></img>`;
+                        }
+                    }
+                    console.log(data[0]['filepath']);
+                })
+                .catch(error => {
+                    console.error('Error fetching PHP script:', error);
+                });
+        });
+
+
+function handleLogout() {
+    if (confirm("Are you sure you want to logout?")) {
+       window.location.href = "../server/logout_handler.php";
+    }
+}
+
+var currentView = 'photos';
+function switchView(view) {
+    document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
+    
+    if (view === 'photos') {
+        document.getElementById('view-photos').classList.add('active');
+        document.getElementById('photo-container').style.display = 'flex';
+        document.getElementById('video-container').style.display = 'none';
+        currentView = 'photos';
+    } else {
+      currentView = 'videos';
+        document.getElementById('view-videos').classList.add('active');
+        document.getElementById('photo-container').style.display = 'none';
+        document.getElementById('video-container').style.display = 'flex';
+    }
+    //console.log("Switching view to: " + view);
+
+}
+
+
+const fileInput = document.querySelector('#file-upload');
+const statusMsg = document.getElementById('uploadStatus');
+
+
+fileInput.addEventListener('change', async (event) => {
+    const files = event.target.files;
+    if (!files) return;
+    const formData = new FormData();
+
+    for (let i = 0; i < files.length; i++) {
+        formData.append('files[]', files[i]);
+    }
+    statusMsg.textContent = 'Uploading...';
+    statusMsg.style.display = 'block';
+
+    setTimeout(() => statusMsg.classList.add('show'), 10);
+
+  try {
+    const response = await fetch('../server/uploader.php', {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      console.log('Upload successful:', result);
+      statusMsg.textContent = 'Upload successful!';
+
+      setTimeout(() => {
+                statusMsg.classList.add('fade');
+                window.location.reload();
+                // 4. Fully hide after fade animation ends (500ms)
+                setTimeout(() => {
+                    statusMsg.style.display = 'none';
+                    statusMsg.classList.remove('show', 'fade');
+                }, 700);
+            }, 500);
+
+    } else {
+      console.log('here');
+      statusMsg.textContent = 'Upload failed.';
+      console.error('Server error:', response.statusText);
+      setTimeout(() => statusMsg.style.display = 'none', 2000);
+    }
+  } catch (error) {
+    console.error('Network error:', error);
+    statusMsg.textContent = "Error: Connection lost.";
+    setTimeout(() => statusMsg.style.display = 'none', 2000);
+  }
+
+});
+
+
+document.getElementById('sync-upload').addEventListener('change', async (e) => {
+   
+    const files = e.target.files;
+    const acceptedTypes = ['image/', 'video/'];
+    if (!files) return;
+    const formData = new FormData();
+
+    for (let i = 0; i < files.length; i++) {
+        const fileType = files[i].type;
+        if (!acceptedTypes.some(type => fileType.startsWith(type))) {
+            continue;
+        }
+        else{
+            formData.append('files[]', files[i]);
+        }
+    }
+    statusMsg.textContent = 'Uploading...';
+    statusMsg.style.display = 'block';
+
+    setTimeout(() => statusMsg.classList.add('show'), 10);
+
+  try {
+    const response = await fetch('../server/uploader.php', {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      console.log('Upload successful:', result);
+      statusMsg.textContent = 'Upload successful!';
+
+      setTimeout(() => {
+                statusMsg.classList.add('fade');
+                window.location.reload();
+                setTimeout(() => {
+                    statusMsg.style.display = 'none';
+                    statusMsg.classList.remove('show', 'fade');
+                }, 300);
+            }, 500);
+
+    } else {
+      console.log('here');
+      statusMsg.textContent = 'Upload failed.';
+      console.error('Server error:', response.statusText);
+      setTimeout(() => statusMsg.style.display = 'none', 2000);
+    }
+  } catch (error) {
+    console.error('Network error:', error);
+    statusMsg.textContent = "Error: Connection lost.";
+    setTimeout(() => statusMsg.style.display = 'none', 2000);
+  }
+
+});
+
+
+
+const modal = document.getElementById("photo-viewer");
+const fullImg = document.getElementById("full-image");
+const captionText = document.getElementById("caption");
+const closeBtn = document.querySelector(".close-viewer");
+
+// 1. Use Event Delegation: Listen for clicks on the entire content container
+document.getElementById('photo-container').addEventListener('click', function(e) {
+    if (e.target.tagName === 'IMG') {
+        
+        modal.style.display = "flex";
+        document.getElementById('full-video').style.display = "none";
+        document.getElementById('full-image').style.display = "block";
+        fullImg.src = e.target.src; 
+        
+        /*
+        const parent = e.target.closest('.post');
+        const title = parent.querySelector('h2').innerText;
+        captionText.innerHTML = title;
+        */
+    }
+
+});
+
+const fullVideo = document.getElementById("full-video");
+const videoSource = document.getElementById("videoSource");
+
+document.getElementById('video-container').addEventListener('click', function(e) {
+  console.log(e.target.tagName);
+    if (e.target.tagName === 'VIDEO') {
+        
+        modal.style.display = "flex";
+        fullVideo.src = e.target.querySelector('source').src; 
+        document.getElementById('full-video').style.display = "block";
+        document.getElementById('full-image').style.display = "none";
+        
+        /*
+        const parent = e.target.closest('.post');
+        const title = parent.querySelector('h2').innerText;
+        captionText.innerHTML = title;
+        */
+    }
+
+});
+
+
+closeBtn.onclick = function() {
+    modal.style.display = "none";
+    fullVideo.pause();
+}
+
+modal.onclick = function(e) {
+    if (e.target === modal) {
+        modal.style.display = "none";
+        fullVideo.pause();
+    }
+}
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === "Escape"){ 
+      modal.style.display = "none";
+      fullVideo.pause();
+    }
+});
+
+
+document.getElementById('btn-download').addEventListener('click', (e) => {
+    if (currentView === 'photos') {
+    const link = document.createElement('a');
+    link.href = fullImg.src;
+    link.download = 'downloaded_image';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    } else if (currentView === 'videos') {
+      const link = document.createElement('a');
+      link.href = fullVideo.src;
+      link.download = 'downloaded_video';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+});
+
+
+document.getElementById('btn-delete').addEventListener('click', async (e) => {
+
+    if (confirm("Are you sure you want to delete this photo? This action cannot be undone.")) {
+        try {
+
+          srcToDelete = '';
+          if (currentView === 'photos') {
+            srcToDelete = fullImg.src;
+          } else {
+            srcToDelete = fullVideo.src;
+          }
+            const response = await fetch('../server/delete_photo.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ filepath: srcToDelete }),
+            });
+            if (response.ok) {
+                const result = await response.json();
+                console.log('Delete successful:', result);
+                alert('Photo deleted successfully.');
+                modal.style.display = "none";
+                window.location.reload();
+            } else {
+                console.error('Server error:', response.statusText);
+                alert('Failed to delete photo.');
+            }
+        } catch (error) {
+            console.error('Network error:', error);
+            alert('Error: Connection lost.');
+        }
+    }
+
+});
