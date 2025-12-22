@@ -55,51 +55,68 @@ const fileInput = document.querySelector('#file-upload');
 const statusMsg = document.getElementById('uploadStatus');
 
 
-fileInput.addEventListener('change', async (event) => {
-    const files = event.target.files;
+fileInput.addEventListener('change', async (e) => {
+    
+    const files = e.target.files;
+    const acceptedTypes = ['image/', 'video/'];
     if (!files) return;
-    const formData = new FormData();
 
-    for (let i = 0; i < files.length; i++) {
-        formData.append('files[]', files[i]);
-    }
-    statusMsg.textContent = 'Uploading...';
+
+    statusMsg.textContent = '0 files uploaded.';
     statusMsg.style.display = 'block';
-
     setTimeout(() => statusMsg.classList.add('show'), 10);
 
-  try {
-    const response = await fetch('../server/uploader.php', {
-      method: 'POST',
-      body: formData,
-    });
+    total = 0;
 
-    if (response.ok) {
-      const result = await response.json();
-      console.log('Upload successful:', result);
-      statusMsg.textContent = 'Upload successful!';
+    for (let i = 0; i < files.length; i++) {
+        const fileType = files[i].type;
+        if (!acceptedTypes.some(type => fileType.startsWith(type))) {
+          continue; // Skip unsupported file types
+        }
+        else{
 
-      setTimeout(() => {
-                statusMsg.classList.add('fade');
-                window.location.reload();
-                // 4. Fully hide after fade animation ends (500ms)
-                setTimeout(() => {
-                    statusMsg.style.display = 'none';
-                    statusMsg.classList.remove('show', 'fade');
-                }, 500);
-            }, 500);
+            const formData = new FormData();
+            formData.append('files[]', files[i]);
+            try {
+            const response = await fetch('../server/uploader.php', {
+              method: 'POST',
+              body: formData,
+            });
 
-    } else {
-      console.log('here');
-      statusMsg.textContent = 'Upload failed.';
-      console.error('Server error:', response.statusText);
-      setTimeout(() => statusMsg.style.display = 'none', 2000);
+            if (response.ok) {
+              const result = await response.json();
+              total += 1;
+              if (total == 1) {
+              statusMsg.textContent = '1 file uploaded... Continuing upload.';
+              }
+              else {
+              statusMsg.textContent = total + ' files uploaded... Continuing upload.';
+              }
+            } else {
+              console.log('here');
+              statusMsg.textContent = 'Upload failed.';
+              console.error('Server error:', response.statusText);
+              setTimeout(() => statusMsg.style.display = 'none', 2000);
+            }
+          } catch (error) {
+            console.error('Network error:', error);
+            statusMsg.textContent = "Error: Connection lost.";
+            setTimeout(() => statusMsg.style.display = 'none', 2000);
+        }
     }
-  } catch (error) {
-    console.error('Network error:', error);
-    statusMsg.textContent = "Error: Connection lost.";
-    setTimeout(() => statusMsg.style.display = 'none', 2000);
+    
   }
+
+  statusMsg.textContent = 'Upload complete. Reloading...';
+
+   setTimeout(() => {
+        statusMsg.classList.add('fade');
+        window.location.reload();
+        setTimeout(() => {
+            statusMsg.style.display = 'none';
+            statusMsg.classList.remove('show', 'fade');
+        }, 300);
+    }, 500);
 
 });
 
@@ -109,53 +126,65 @@ document.getElementById('sync-upload').addEventListener('change', async (e) => {
     const files = e.target.files;
     const acceptedTypes = ['image/', 'video/'];
     if (!files) return;
-    const formData = new FormData();
+
+
+    statusMsg.textContent = '0 files uploaded.';
+    statusMsg.style.display = 'block';
+    setTimeout(() => statusMsg.classList.add('show'), 10);
+
+    total = 0;
 
     for (let i = 0; i < files.length; i++) {
         const fileType = files[i].type;
         if (!acceptedTypes.some(type => fileType.startsWith(type))) {
-            continue;
+          continue; // Skip unsupported file types
         }
         else{
+
+            const formData = new FormData();
             formData.append('files[]', files[i]);
+            try {
+            const response = await fetch('../server/uploader.php', {
+              method: 'POST',
+              body: formData,
+            });
+
+            if (response.ok) {
+              const result = await response.json();
+              total += 1;
+              if (total == 1) {
+              statusMsg.textContent = '1 file uploaded... Continuing upload.';
+              }
+              else {
+              statusMsg.textContent = total + ' files uploaded... Continuing upload.';
+              }
+            } else {
+              console.log('here');
+              statusMsg.textContent = 'Upload failed.';
+              console.error('Server error:', response.statusText);
+              setTimeout(() => statusMsg.style.display = 'none', 2000);
+            }
+          } catch (error) {
+            console.error('Network error:', error);
+            statusMsg.textContent = "Error: Connection lost.";
+            setTimeout(() => statusMsg.style.display = 'none', 2000);
         }
     }
-    statusMsg.textContent = 'Uploading...';
-    statusMsg.style.display = 'block';
-
-    setTimeout(() => statusMsg.classList.add('show'), 10);
-
-  try {
-    const response = await fetch('../server/uploader.php', {
-      method: 'POST',
-      body: formData,
-    });
-
-    if (response.ok) {
-      const result = await response.json();
-      console.log('Upload successful:', result);
-      statusMsg.textContent = 'Upload successful!';
-
-      setTimeout(() => {
-                statusMsg.classList.add('fade');
-                window.location.reload();
-                setTimeout(() => {
-                    statusMsg.style.display = 'none';
-                    statusMsg.classList.remove('show', 'fade');
-                }, 300);
-            }, 500);
-
-    } else {
-      console.log('here');
-      statusMsg.textContent = 'Upload failed.';
-      console.error('Server error:', response.statusText);
-      setTimeout(() => statusMsg.style.display = 'none', 2000);
-    }
-  } catch (error) {
-    console.error('Network error:', error);
-    statusMsg.textContent = "Error: Connection lost.";
-    setTimeout(() => statusMsg.style.display = 'none', 2000);
+    
   }
+
+  statusMsg.textContent = 'Upload complete. Reloading...';
+
+   setTimeout(() => {
+        statusMsg.classList.add('fade');
+        window.location.reload();
+        setTimeout(() => {
+            statusMsg.style.display = 'none';
+            statusMsg.classList.remove('show', 'fade');
+        }, 300);
+    }, 500);
+    
+
 
 });
 
