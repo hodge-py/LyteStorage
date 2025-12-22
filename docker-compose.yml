@@ -1,23 +1,33 @@
 services:
-  web:
-    # --- CHANGE THIS LINE ---
-    # Instead of 'image: php:8.3-apache', we use 'build: .' 
-    # The '.' tells Docker Compose to look for the Dockerfile in the current directory.
-    build: . 
-    # ------------------------
-    
+  # The Web Server (Handles incoming traffic)
+  nginx:
+    image: nginx:alpine
+    container_name: web_server
     ports:
       - "80:80"
+    volumes:
+      - ./PHP:/var/www/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - php
+    restart: unless-stopped
+
+  # The PHP Processor (Uses your custom Dockerfile)
+  php:
+    build: .
+    container_name: php_processor
     volumes:
       - ./PHP:/var/www/html
     environment:
       MYSQL_DATABASE: my_database
       MYSQL_USER: my_user
       MYSQL_PASSWORD: my_password
-      MYSQL_ROOT_PASSWORD: root_password # Not usually needed for the PHP service
+    restart: unless-stopped
 
+  # The Database
   db:
     image: mariadb:lts 
+    container_name: database
     volumes:
       - ./MariaDB:/var/lib/mysql
     environment:
@@ -25,18 +35,17 @@ services:
       MYSQL_DATABASE: my_database
       MYSQL_USER: my_user
       MYSQL_PASSWORD: my_password
-    ports:
-      - "3306:3306"
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 30s
       timeout: 10s
       retries: 3
 
+  # Database Management Tool
   phpmyadmin:
     image: phpmyadmin:latest
     ports:
       - "8080:80"
     environment:
-      PMA_HOST: db # IMPORTANT: This connects phpMyAdmin to the 'db' service
+      PMA_HOST: db
       MYSQL_ROOT_PASSWORD: root_password
