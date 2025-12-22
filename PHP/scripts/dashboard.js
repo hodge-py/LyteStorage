@@ -86,7 +86,7 @@ fileInput.addEventListener('change', async (event) => {
                 setTimeout(() => {
                     statusMsg.style.display = 'none';
                     statusMsg.classList.remove('show', 'fade');
-                }, 700);
+                }, 500);
             }, 500);
 
     } else {
