@@ -8,7 +8,15 @@
 
 ## Installation Instructions
 
-Download a zip of the repo or clone the repo.
+Docker Desktop is required to self host.
+
+<a href="https://www.docker.com/products/docker-desktop/">Docker Desktop Link</a>
+
+Download a zip of the repo from the release section
+
+or
+
+clone the repo if you want the cutting edge.
 
 ```terminal
 https://github.com/hodge-py/LyteStorage.git
