@@ -33,18 +33,14 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
         </div>
 
        <header class="main-header">
-            <div class="logo">
-                <b>LyteStorage</b>
-                <img id="icon" src="../static/icon/lytestorageicon.png"></img>
-            </div>
+            <div class="logo"><b>LyteStorage</b></div>
 
             <div class="view-toggle">
                 <button id="view-photos" class="toggle-btn active" onclick="switchView('photos')">Photos</button>
                 <button id="view-videos" class="toggle-btn" onclick="switchView('videos')">Videos</button>
             </div>
-            <div class="logout-wrapper">
+
             <button class="logout-btn" onclick="handleLogout()">Logout</button>
-            </div>
         </header>
 
         <label for="sync-upload" class="floating-sync" title="Upload Photo">
