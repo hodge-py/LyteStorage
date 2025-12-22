@@ -298,21 +298,6 @@ transform: scale(1.1);
     background: rgba(255, 0, 0, 0.6);
 }
 
-
-@media screen and (max-height: 750px) and (min-height: 680px) {
-  
-    .floating-sync {
-        bottom: 15%;
-    }
-}
-
-@media screen and (max-height: 680px) {
-  
-    .floating-sync {
-        bottom: 17%;
-    }
-}
-
 #icon {
     width: 11%;
     height: 11%;
@@ -334,4 +319,34 @@ transform: scale(1.1);
 
 .logout-wrapper {
     justify-content: flex-end; 
+}
+
+@media screen and (max-height: 750px) and (min-height: 680px) {
+  
+    .floating-sync {
+        bottom: 15%;
+    }
+}
+
+@media screen and (max-height: 680px) {
+  
+    .floating-sync {
+        bottom: 17%;
+    }
+    
+    #title-app {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 680px) {
+
+    #title-app {
+        display: none;
+    }
+
+    #icon {
+        height: 50%;
+        width: 50%;
+    }
 }

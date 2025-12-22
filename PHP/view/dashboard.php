@@ -34,7 +34,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
 
        <header class="main-header">
             <div class="logo">
-                <b>LyteStorage</b>
+                <div id="title-app"><b>LyteStorage</b></div>
                 <img id="icon" src="../static/icon/lytestorageicon.png"></img>
             </div>
 
