@@ -50,6 +50,10 @@ h1 {
     justify-content: center;
 }
 
+video {
+    cursor: pointer;
+}
+
 .main-header {
 position: fixed;
 top: 0;

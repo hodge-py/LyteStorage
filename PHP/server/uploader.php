@@ -34,7 +34,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             else{
 
             try{
-                $uniqueId = uniqid();
                 $tmpPath = $_FILES['files']['tmp_name'][$i];
                 $newName = "images/" .  basename($_FILES['files']['name'][$i]);
                 
