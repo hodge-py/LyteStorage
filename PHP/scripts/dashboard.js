@@ -86,8 +86,8 @@ fileInput.addEventListener('change', async (event) => {
                 setTimeout(() => {
                     statusMsg.style.display = 'none';
                     statusMsg.classList.remove('show', 'fade');
-                }, 700);
-            }, 500);
+                }, 500);
+            }, 1500);
 
     } else {
       console.log('here');
@@ -139,11 +139,12 @@ document.getElementById('sync-upload').addEventListener('change', async (e) => {
       setTimeout(() => {
                 statusMsg.classList.add('fade');
                 window.location.reload();
+                // 4. Fully hide after fade animation ends (500ms)
                 setTimeout(() => {
                     statusMsg.style.display = 'none';
                     statusMsg.classList.remove('show', 'fade');
-                }, 300);
-            }, 500);
+                }, 500);
+            }, 1500);
 
     } else {
       console.log('here');
@@ -250,24 +251,18 @@ document.getElementById('btn-delete').addEventListener('click', async (e) => {
 
     if (confirm("Are you sure you want to delete this photo? This action cannot be undone.")) {
         try {
-
-          srcToDelete = '';
-          if (currentView === 'photos') {
-            srcToDelete = fullImg.src;
-          } else {
-            srcToDelete = fullVideo.src;
-          }
+          //console.log(fullImg.src);
             const response = await fetch('../server/delete_photo.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ filepath: srcToDelete }),
+                body: JSON.stringify({ filepath: fullImg.src }),
             });
             if (response.ok) {
                 const result = await response.json();
                 console.log('Delete successful:', result);
                 alert('Photo deleted successfully.');
                 modal.style.display = "none";
-                window.location.reload();
+                //window.location.reload();
             } else {
                 console.error('Server error:', response.statusText);
                 alert('Failed to delete photo.');
