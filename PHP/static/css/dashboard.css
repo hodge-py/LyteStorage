@@ -350,3 +350,76 @@ transform: scale(1.1);
         width: 50%;
     }
 }
+
+img.selected {
+    outline: 5px solid #3498db;
+    opacity: 0.8;
+    transform: scale(0.95);
+    transition: all 0.2s ease;
+}
+
+img {
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.select-mode-active img {
+    cursor: copy;
+}
+
+
+
+.delete-select {
+
+position: fixed;   
+bottom: 5%;      
+right: 3%;     
+z-index: 9999;    
+
+
+width: 60px;
+height: 60px;
+background-color: #d40000;
+color: white;
+border-radius: 50%;
+display: none;
+align-items: center;
+justify-content: center;
+font-size: 20px;
+cursor: pointer;
+box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+transition: transform 0.2s, background-color 0.2s;
+}
+
+.download-select {
+
+position: fixed;   
+bottom: 13%;      
+right: 3%;     
+z-index: 9999;    
+
+
+width: 60px;
+height: 60px;
+background-color: #008888;
+color: white;
+border-radius: 50%;
+display: none;
+align-items: center;
+justify-content: center;
+font-size: 20px;
+cursor: pointer;
+box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+transition: transform 0.2s, background-color 0.2s;
+}
+
+.download-select:hover {
+background-color: #0056b3;
+transform: scale(1.1); 
+}
+
+
+.delete-select:hover {
+background-color: #5f0000;
+transform: scale(1.1); 
+}

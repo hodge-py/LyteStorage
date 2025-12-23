@@ -47,16 +47,30 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
             </div>
         </header>
 
-        <label for="sync-upload" class="floating-sync" title="Upload Photo">
+        
+        <label id="sync" for="sync-upload" class="floating-sync" title="Upload Photo">
             <b>Sync</b>
         </label>
         <input type="file" id="sync-upload" accept="image/*, video/*" style="display: none;" webkitdirectory directory>
 
 
-        <label for="file-upload" class="floating-plus-btn" title="Upload Photo">
+        <label id="multi-btn" for="file-upload" class="floating-plus-btn" title="Upload Photo">
             <b>+</b>
         </label>
         <input type="file" id="file-upload" accept="image/*, video/*" style="display: none;" multiple>
+
+
+
+        <label id="delete-multi" for="button-delete-select" class="delete-select" title="">
+            <b>DEL</b>
+        </label>
+        <input type="button" id="button-delete-select" accept="image/*, video/*" style="display: none;">
+
+
+        <label id="download-multi" for="button-download-select" class="download-select" title="Download Selected">
+            <b>D/L</b>
+        </label>
+        <input type="button" id="button-download-select" accept="image/*, video/*" style="display: none;" >
 
 
     </div>
