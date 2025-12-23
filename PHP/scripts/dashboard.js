@@ -393,6 +393,9 @@ document.getElementById('button-delete-select').addEventListener('click', async 
 
         }
 
+        window.location.reload();
+      }
+
 });
 
 
