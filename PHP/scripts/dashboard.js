@@ -369,4 +369,32 @@ document.getElementById('btn-delete').addEventListener('click', async (e) => {
 });
 
 
+document.getElementById('button-delete-select').addEventListener('click', async (e) => {
+
+    if (confirm("Are you sure you want to delete this photo? This action cannot be undone.")) {
+
+        for (const src in filePathHolder) {
+            try {
+
+              const response = await fetch('../server/delete_photo.php', { 
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ filepath: src }),
+              });
+              if (response.ok) {
+                  const result = await response.json();
+                  console.log('Delete successful:', result);
+              } else {
+                  console.error('Server error:', response.statusText);
+              }
+          } catch (error) {
+              console.error('Network error:', error);
+          }
+
+        }
+
+});
+
+
+
 
