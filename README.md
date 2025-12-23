@@ -4,7 +4,7 @@
 <img width="500" height="500" alt="icon_logo-removebg-preview" src="./PHP/static/icon/lytestorageicon.png" />
 </div>
 
-<h3 align="center"><b>Light-weight self-hosted photo storage management system - Specialized for single board computers</b></h3>
+<h3 align="center"><b>Light-weight self-hosted photo storage management system - Specialized for low RAM usage and stability</b></h3>
 
 ## Installation Instructions
 
