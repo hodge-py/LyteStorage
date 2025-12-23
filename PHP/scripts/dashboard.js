@@ -12,9 +12,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
                         img.src = "../server/" + data[i]['filepath'];
                         var extension = data[i]['filepath'].split('.').pop().toLowerCase();
                          if (videoExtensions.includes('.' + extension)) {
-                            videoContainer.innerHTML += `<video loading="lazy" muted style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh; background-color: #24292e;"><source src="${img.src}"></video>`;
+                            videoContainer.innerHTML += `<video class="video-item" loading="lazy" muted style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh; background-color: #24292e;"><source src="${img.src}"></video>`;
                         }  else if (imageExtensions.includes('.' + extension)) {
-                            photoContainer.innerHTML += `<img src="${img.src}" alt="${img.src}" loading="lazy" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh;"></img>`;
+                            photoContainer.innerHTML += `<img class="photo-item" src="${img.src}" alt="${img.src}" loading="lazy" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh;"></img>`;
                         }
                     }
                     console.log(data[0]['filepath']);
@@ -22,6 +22,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 .catch(error => {
                     console.error('Error fetching PHP script:', error);
                 });
+
+                
         });
 
 
@@ -194,9 +196,10 @@ const modal = document.getElementById("photo-viewer");
 const fullImg = document.getElementById("full-image");
 const captionText = document.getElementById("caption");
 const closeBtn = document.querySelector(".close-viewer");
+var longClick = false;
 
-// 1. Use Event Delegation: Listen for clicks on the entire content container
 document.getElementById('photo-container').addEventListener('click', function(e) {
+  if (!longClick) {
     if (e.target.tagName === 'IMG') {
         
         modal.style.display = "flex";
@@ -210,6 +213,7 @@ document.getElementById('photo-container').addEventListener('click', function(e)
         captionText.innerHTML = title;
         */
     }
+  }
 
 });
 
@@ -218,6 +222,7 @@ const videoSource = document.getElementById("videoSource");
 
 document.getElementById('video-container').addEventListener('click', function(e) {
   console.log(e.target.tagName);
+  if (!longClick) {
     if (e.target.tagName === 'VIDEO') {
         
         modal.style.display = "flex";
@@ -231,8 +236,62 @@ document.getElementById('video-container').addEventListener('click', function(e)
         captionText.innerHTML = title;
         */
     }
+  }
 
 });
+
+
+var pressTimer;
+filePathHolder = {};
+
+document.getElementById('photo-container').addEventListener('pointerdown', function(e) {
+    if (e.target.tagName === 'IMG') {
+    
+    clearTimeout(pressTimer);
+
+    pressTimer = setTimeout(() => {
+        console.log("Long press triggered!");
+        enterSelectMode(e.target);
+        longClick = true;
+        document.getElementById('sync').style.display = 'none';
+        document.getElementById('multi-btn').style.display = 'none';
+
+        document.getElementById('delete-multi').style.display = 'flex';
+        document.getElementById('download-multi').style.display = 'flex';
+
+    }, 500);
+    }
+
+
+  });
+
+document.getElementById('photo-container').addEventListener('pointerup', function(e) {
+  cancelPress();
+});
+
+
+function cancelPress() {
+    clearTimeout(pressTimer);
+    }
+
+function enterSelectMode(firstImg) {
+    isSelectMode = true;
+    document.body.classList.add('select-mode-active');
+    toggleSelect(firstImg);
+
+    if (filePathHolder.hasOwnProperty(firstImg.src)) {
+        delete filePathHolder[firstImg.src];
+    } else {
+        filePathHolder[firstImg.src] = firstImg.src;
+    }
+    console.log(filePathHolder);
+}
+
+function toggleSelect(img) {
+    img.classList.toggle('selected');
+}
+
+
 
 
 closeBtn.onclick = function() {
@@ -308,3 +367,79 @@ document.getElementById('btn-delete').addEventListener('click', async (e) => {
     }
 
 });
+
+
+document.getElementById('button-delete-select').addEventListener('click', async (e) => {
+
+    if (confirm("Are you sure you want to delete this photo? This action cannot be undone.")) {
+
+        for (const src in filePathHolder) {
+            try {
+
+              const response = await fetch('../server/delete_photo.php', { 
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ filepath: src }),
+              });
+              if (response.ok) {
+                  const result = await response.json();
+                  console.log('Delete successful:', result);
+              } else {
+                  console.error('Server error:', response.statusText);
+              }
+          } catch (error) {
+              console.error('Network error:', error);
+          }
+
+        }
+
+        window.location.reload();
+      }
+
+});
+
+document.getElementById('download-multi').addEventListener('click', async (e) => {
+    if (currentView === 'photos') {
+      const fileUrls = Object.values(filePathHolder);
+
+      downloadMultipleFiles(fileUrls, 'source_photos.zip');
+
+      //window.location.reload();
+
+    } else if (currentView === 'videos') {
+      const link = document.createElement('a');
+      link.href = fullVideo.src;
+      link.download = 'downloaded_video';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+});
+
+
+async function downloadMultipleFiles(fileUrls, zipFilename = 'source_files.zip') {
+    const zip = new JSZip();
+    const promises = fileUrls.map(async (url, index) => {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`Could not fetch file: ${url}`);
+            const blob = await response.blob();
+            const filename = url.substring(url.lastIndexOf('/') + 1) || `file_${index + 1}.js`;
+            zip.file(filename, blob);
+        } catch (error) {
+            console.error(error);
+        }
+    });
+
+    await Promise.all(promises);
+
+    zip.generateAsync({ type: "blob" }).then(function(content) {
+        saveAs(content, zipFilename);
+    })
+
+    setTimeout(function() {
+    window.location.reload();
+    }, 1000);
+
+}
