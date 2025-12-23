@@ -398,6 +398,48 @@ document.getElementById('button-delete-select').addEventListener('click', async 
 
 });
 
+document.getElementById('download-multi').addEventListener('click', async (e) => {
+    if (currentView === 'photos') {
+      const fileUrls = Object.values(filePathHolder);
+
+      downloadMultipleFiles(fileUrls, 'source_photos.zip');
+
+      //window.location.reload();
+
+    } else if (currentView === 'videos') {
+      const link = document.createElement('a');
+      link.href = fullVideo.src;
+      link.download = 'downloaded_video';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+});
 
 
+async function downloadMultipleFiles(fileUrls, zipFilename = 'source_files.zip') {
+    const zip = new JSZip();
+    const promises = fileUrls.map(async (url, index) => {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`Could not fetch file: ${url}`);
+            const blob = await response.blob();
+            const filename = url.substring(url.lastIndexOf('/') + 1) || `file_${index + 1}.js`;
+            zip.file(filename, blob);
+        } catch (error) {
+            console.error(error);
+        }
+    });
 
+    await Promise.all(promises);
+
+    zip.generateAsync({ type: "blob" }).then(function(content) {
+        saveAs(content, zipFilename);
+    })
+
+    setTimeout(function() {
+    window.location.reload();
+    }, 1000);
+
+}
