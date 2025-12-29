@@ -33,3 +33,6 @@ docker-compose up -d
 ```
 
 As easy as that.
+
+
+<img width="666" height="158" alt="image" src="https://github.com/user-attachments/assets/8a6de28f-6f1a-4b95-905f-2ea684ee2fa5" />
