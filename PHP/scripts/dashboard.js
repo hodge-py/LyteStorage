@@ -12,9 +12,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
                         img.src = "../server/" + data[i]['filepath'];
                         var extension = data[i]['filepath'].split('.').pop().toLowerCase();
                          if (videoExtensions.includes('.' + extension)) {
-                            videoContainer.innerHTML += `<video class="video-item" loading="lazy" muted style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh; background-color: #24292e;"><source src="${img.src}"></video>`;
+                            videoContainer.innerHTML += `<video class="video-item" muted style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh; background-color: #24292e;"><source src="${img.src}"></video>`;
                         }  else if (imageExtensions.includes('.' + extension)) {
-                            photoContainer.innerHTML += `<img class="photo-item" src="${img.src}" alt="${img.src}" loading="lazy" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh;"></img>`;
+                            photoContainer.innerHTML += `<div class='image-container'><input class='check-box' type='checkbox' style='position: absolute; top: 3%; left: 3%; z-index: 10; cursor: pointer;' />
+                            <img class="photo-item" src="${img.src}" alt="${img.src}" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh;"></img></div>`;
                         }
                     }
                     console.log(data[0]['filepath']);
@@ -241,18 +242,40 @@ document.getElementById('video-container').addEventListener('click', function(e)
 });
 
 
+let checkboxSrc = {};
+let filePathHolder = {};
+const container = document.querySelector('#photo-container'); 
 
-document.getElementsByClassName('check-box').addEventListener('click', function(e) {
-        e.target.classList.toggle('selected');
+container.addEventListener('change', (e) => {
+    if (e.target.classList.contains('check-box')) {
+        const checkbox = e.target;
+        
+        const imgElement = checkbox.nextElementSibling;
+        const imgSrc = imgElement.src;
 
         document.getElementById('sync').style.display = 'none';
         document.getElementById('multi-btn').style.display = 'none';
-
         document.getElementById('delete-multi').style.display = 'flex';
         document.getElementById('download-multi').style.display = 'flex';
 
+        if (checkbox.checked) {
+            filePathHolder[imgSrc] = imgSrc;
+        } else {
+            delete filePathHolder[imgSrc];
+        }
 
-  });
+        if (Object.keys(filePathHolder).length === 0) {
+            document.getElementById('delete-multi').style.display = 'none';
+            document.getElementById('download-multi').style.display = 'none';
+            document.getElementById('sync').style.display = 'flex';
+          document.getElementById('multi-btn').style.display = 'flex';
+        }
+
+        console.log("Selected Files:", filePathHolder);
+    }
+});
+        
+        
 
 
 
@@ -280,7 +303,7 @@ document.getElementById('btn-download').addEventListener('click', (e) => {
     if (currentView === 'photos') {
     const link = document.createElement('a');
     link.href = fullImg.src;
-    link.download = 'downloaded_image';
+    link.download = fullImg.src.substring(fullImg.src.lastIndexOf('/') + 1);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -288,7 +311,7 @@ document.getElementById('btn-download').addEventListener('click', (e) => {
     } else if (currentView === 'videos') {
       const link = document.createElement('a');
       link.href = fullVideo.src;
-      link.download = 'downloaded_video';
+      link.download = fullVideo.src.substring(fullVideo.src.lastIndexOf('/') + 1);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
