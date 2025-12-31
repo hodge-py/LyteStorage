@@ -429,3 +429,7 @@ transform: scale(1.1);
   position: relative; /* Sets the reference point for the checkbox */
   display: inline-block; /* Keeps the container the same size as the image */
 }
+
+#image-video-title {
+    color: white;
+}

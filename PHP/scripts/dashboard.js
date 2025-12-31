@@ -12,10 +12,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
                         img.src = "../server/" + data[i]['filepath'];
                         var extension = data[i]['filepath'].split('.').pop().toLowerCase();
                          if (videoExtensions.includes('.' + extension)) {
-                            videoContainer.innerHTML += `<video class="video-item" muted style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh; background-color: #24292e;"><source src="${img.src}"></video>`;
+                            videoContainer.innerHTML += `<video loading="lazy" class="video-item" muted style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh; background-color: #24292e;"><source src="${img.src}"></video>`;
                         }  else if (imageExtensions.includes('.' + extension)) {
                             photoContainer.innerHTML += `<div class='image-container'><input class='check-box' type='checkbox' style='position: absolute; top: 3%; left: 3%; z-index: 10; cursor: pointer;' />
-                            <img class="photo-item" src="${img.src}" alt="${img.src}" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh;"></img></div>`;
+                            <img class="photo-item" loading="lazy" src="${img.src}" alt="${img.src}" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh;"></img></div>`;
                         }
                     }
                     console.log(data[0]['filepath']);
@@ -200,7 +200,7 @@ const closeBtn = document.querySelector(".close-viewer");
 var longClick = false;
 
 document.getElementById('photo-container').addEventListener('click', function(e) {
-  if (!longClick) {
+
     if (e.target.tagName === 'IMG') {
         
         modal.style.display = "flex";
@@ -208,13 +208,8 @@ document.getElementById('photo-container').addEventListener('click', function(e)
         document.getElementById('full-image').style.display = "block";
         fullImg.src = e.target.src; 
         
-        /*
-        const parent = e.target.closest('.post');
-        const title = parent.querySelector('h2').innerText;
-        captionText.innerHTML = title;
-        */
+        document.getElementById('image-video-title').innerText = e.target.alt.split('/').pop();
     }
-  }
 
 });
 
@@ -223,7 +218,7 @@ const videoSource = document.getElementById("videoSource");
 
 document.getElementById('video-container').addEventListener('click', function(e) {
   console.log(e.target.tagName);
-  if (!longClick) {
+
     if (e.target.tagName === 'VIDEO') {
         
         modal.style.display = "flex";
@@ -237,7 +232,6 @@ document.getElementById('video-container').addEventListener('click', function(e)
         captionText.innerHTML = title;
         */
     }
-  }
 
 });
 
