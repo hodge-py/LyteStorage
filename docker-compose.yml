@@ -19,9 +19,9 @@ services:
     volumes:
       - ./PHP:/var/www/html
     environment:
-      MYSQL_DATABASE: my_database
-      MYSQL_USER: my_user
-      MYSQL_PASSWORD: my_password
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     restart: unless-stopped
 
   # The Database
@@ -31,10 +31,10 @@ services:
     volumes:
       - ./MariaDB:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: my_database
-      MYSQL_USER: my_user
-      MYSQL_PASSWORD: my_password
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 30s
@@ -47,5 +47,5 @@ services:
     ports:
       - "8080:80"
     environment:
-      PMA_HOST: db
-      MYSQL_ROOT_PASSWORD: root_password
+      PMA_HOST: ${PMA_HOST}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}

@@ -12,9 +12,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
                         img.src = "../server/" + data[i]['filepath'];
                         var extension = data[i]['filepath'].split('.').pop().toLowerCase();
                          if (videoExtensions.includes('.' + extension)) {
-                            videoContainer.innerHTML += `<video class="video-item" loading="lazy" muted style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh; background-color: #24292e;"><source src="${img.src}"></video>`;
+                            videoContainer.innerHTML += `<video loading="lazy" class="video-item" muted style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh; background-color: #24292e;"><source src="${img.src}"></video>`;
                         }  else if (imageExtensions.includes('.' + extension)) {
-                            photoContainer.innerHTML += `<img class="photo-item" src="${img.src}" alt="${img.src}" loading="lazy" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh;"></img>`;
+                            photoContainer.innerHTML += `<div class='image-container'><input class='check-box' type='checkbox' style='position: absolute; top: 3%; left: 3%; z-index: 10; cursor: pointer;' />
+                            <img class="photo-item" loading="lazy" src="${img.src}" alt="${img.src}" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh;"></img></div>`;
                         }
                     }
                     console.log(data[0]['filepath']);
@@ -199,7 +200,7 @@ const closeBtn = document.querySelector(".close-viewer");
 var longClick = false;
 
 document.getElementById('photo-container').addEventListener('click', function(e) {
-  if (!longClick) {
+
     if (e.target.tagName === 'IMG') {
         
         modal.style.display = "flex";
@@ -207,13 +208,8 @@ document.getElementById('photo-container').addEventListener('click', function(e)
         document.getElementById('full-image').style.display = "block";
         fullImg.src = e.target.src; 
         
-        /*
-        const parent = e.target.closest('.post');
-        const title = parent.querySelector('h2').innerText;
-        captionText.innerHTML = title;
-        */
+        document.getElementById('image-video-title').innerText = e.target.alt.split('/').pop();
     }
-  }
 
 });
 
@@ -222,7 +218,7 @@ const videoSource = document.getElementById("videoSource");
 
 document.getElementById('video-container').addEventListener('click', function(e) {
   console.log(e.target.tagName);
-  if (!longClick) {
+
     if (e.target.tagName === 'VIDEO') {
         
         modal.style.display = "flex";
@@ -236,61 +232,44 @@ document.getElementById('video-container').addEventListener('click', function(e)
         captionText.innerHTML = title;
         */
     }
-  }
 
 });
 
 
-var pressTimer;
-filePathHolder = {};
+let checkboxSrc = {};
+let filePathHolder = {};
+const container = document.querySelector('#photo-container'); 
 
-document.getElementById('photo-container').addEventListener('pointerdown', function(e) {
-    if (e.target.tagName === 'IMG') {
-    
-    clearTimeout(pressTimer);
+container.addEventListener('change', (e) => {
+    if (e.target.classList.contains('check-box')) {
+        const checkbox = e.target;
+        
+        const imgElement = checkbox.nextElementSibling;
+        const imgSrc = imgElement.src;
 
-    pressTimer = setTimeout(() => {
-        console.log("Long press triggered!");
-        enterSelectMode(e.target);
-        longClick = true;
         document.getElementById('sync').style.display = 'none';
         document.getElementById('multi-btn').style.display = 'none';
-
         document.getElementById('delete-multi').style.display = 'flex';
         document.getElementById('download-multi').style.display = 'flex';
 
-    }, 500);
+        if (checkbox.checked) {
+            filePathHolder[imgSrc] = imgSrc;
+        } else {
+            delete filePathHolder[imgSrc];
+        }
+
+        if (Object.keys(filePathHolder).length === 0) {
+            document.getElementById('delete-multi').style.display = 'none';
+            document.getElementById('download-multi').style.display = 'none';
+            document.getElementById('sync').style.display = 'flex';
+          document.getElementById('multi-btn').style.display = 'flex';
+        }
+
+        console.log("Selected Files:", filePathHolder);
     }
-
-
-  });
-
-document.getElementById('photo-container').addEventListener('pointerup', function(e) {
-  cancelPress();
 });
-
-
-function cancelPress() {
-    clearTimeout(pressTimer);
-    }
-
-function enterSelectMode(firstImg) {
-    isSelectMode = true;
-    document.body.classList.add('select-mode-active');
-    toggleSelect(firstImg);
-
-    if (filePathHolder.hasOwnProperty(firstImg.src)) {
-        delete filePathHolder[firstImg.src];
-    } else {
-        filePathHolder[firstImg.src] = firstImg.src;
-    }
-    console.log(filePathHolder);
-}
-
-function toggleSelect(img) {
-    img.classList.toggle('selected');
-}
-
+        
+        
 
 
 
@@ -318,7 +297,7 @@ document.getElementById('btn-download').addEventListener('click', (e) => {
     if (currentView === 'photos') {
     const link = document.createElement('a');
     link.href = fullImg.src;
-    link.download = 'downloaded_image';
+    link.download = fullImg.src.substring(fullImg.src.lastIndexOf('/') + 1);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -326,7 +305,7 @@ document.getElementById('btn-download').addEventListener('click', (e) => {
     } else if (currentView === 'videos') {
       const link = document.createElement('a');
       link.href = fullVideo.src;
-      link.download = 'downloaded_video';
+      link.download = fullVideo.src.substring(fullVideo.src.lastIndexOf('/') + 1);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

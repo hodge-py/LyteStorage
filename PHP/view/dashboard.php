@@ -81,6 +81,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
 
        <div id="photo-viewer" class="modal">
             <span class="close-viewer">&times;</span>
+            <h2 id="image-video-title"></h2>
             <img class="modal-content" id="full-image">
             <video style="display: none;" class="modal-content" id="full-video" controls></video>
             <div id="caption"></div>
