@@ -7,24 +7,37 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 .then(data => {
                   const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.bmp'];
                   const videoExtensions = ['.mp4', '.mkv', '.avi', '.mov', '.wmv', '.flv', '.webm', '.mpg', '.mpeg'];
-                    for (let i = 0; i < data.length; i++) {
-                        const img = document.createElement('img');
-                        img.src = "../server/" + data[i]['filepath'];
-                        var extension = data[i]['filepath'].split('.').pop().toLowerCase();
-                         if (videoExtensions.includes('.' + extension)) {
-                            videoContainer.innerHTML += `<video loading="lazy" class="video-item" muted style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh; background-color: #24292e;"><source src="${img.src}"></video>`;
-                        }  else if (imageExtensions.includes('.' + extension)) {
-                            photoContainer.innerHTML += `<div class='image-container'><input class='check-box' type='checkbox' style='position: absolute; top: 3%; left: 3%; z-index: 10; cursor: pointer;' />
-                            <img class="photo-item" loading="lazy" src="${img.src}" alt="${img.src}" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 1%; width: 20vw; height: 20vh;"></img></div>`;
-                        }
-                    }
-                    console.log(data[0]['filepath']);
+
+                  const photoFragment = document.createDocumentFragment();
+                    const videoFragment = document.createDocumentFragment();
+                data.forEach(item => {
+                const fullSrc = "../server/" + item.filepath;
+                const extension = "." + item.filepath.split('.').pop().toLowerCase();
+
+                if (videoExtensions.includes(extension)) {
+                    const videoDiv = document.createElement('div');
+                    videoDiv.innerHTML = `<video loading="lazy" class="video-item" muted style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 10px; width: 20vw; height: 20vh; background-color: #24292e;"><source src="${fullSrc}"></video>`;
+                    videoFragment.appendChild(videoDiv.firstChild);
+                } 
+                else if (imageExtensions.includes(extension)) {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'image-container';
+                    wrapper.innerHTML = `
+                        <input class='check-box' type='checkbox' style='position: absolute; top: 3%; left: 3%; z-index: 10; cursor: pointer;' />
+                        <img class="photo-item" loading="lazy" src="${fullSrc}" alt="Photo" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.88); margin-bottom: 10px; width: 20vw; height: 20vh; object-fit: cover;">
+                    `;
+                    photoFragment.appendChild(wrapper);
+                }
                 })
+
+                    photoContainer.appendChild(photoFragment);
+                    videoContainer.appendChild(videoFragment);
+        })
                 .catch(error => {
                     console.error('Error fetching PHP script:', error);
                 });
 
-                
+
         });
 
 

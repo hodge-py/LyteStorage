@@ -1,7 +1,7 @@
 <?php
-// config.php
 
-// Database credentials
+
+
 define('DB_SERVER', 'db');
 define('DB_USERNAME', 'root'); // CHANGE THIS
 define('DB_PASSWORD', 'root_password'); // CHANGE THIS
