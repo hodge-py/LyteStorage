@@ -40,6 +40,30 @@ docker compose up -d
 
 As easy as that.
 
+To access the site simply type in the local IP address of the device hosting.
+
+IP Commands:
+
+Windows:
+
+```terminal
+ipconfig
+```
+
+Linux:
+
+```terminal
+ip addr show
+```
+
+or
+
+```terminal
+ipconfig
+```
+
+IP address may be available in the settings of your operating system.
+
 To shutdown the app run:
 
 ```terminal
@@ -63,6 +87,7 @@ Idle performance of LyteStorage on radxa rock 3c rk3566 with 2GB of RAM.
   * Location Mapping
   * Improve Performance
   * Other file types
+  * GUI to start the app
 * Desktop
   * Add desktop API for easy syncing
   * Automatic syncing
