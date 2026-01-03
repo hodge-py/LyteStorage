@@ -4,7 +4,7 @@
 <img width="500" height="500" alt="icon_logo-removebg-preview" src="./PHP/static/icon/lytestorageicon.png" />
 </div>
 
-<h3 align="center"><b>Light-weight self-hosted photo storage management system - Specialized for single board computers</b></h3>
+<h3 align="center"><b>Light-weight self-hosted photo storage management system - Specialized for low RAM usage and stability</b></h3>
 
 ## Installation Instructions
 
@@ -33,3 +33,11 @@ docker-compose up -d
 ```
 
 As easy as that.
+
+<h2 align="center">Performance</h2>
+
+<div align="center">
+<img width="666" height="158" alt="image" src="https://github.com/user-attachments/assets/8a6de28f-6f1a-4b95-905f-2ea684ee2fa5" />
+</div>
+
+- Add API to sync from desktop
