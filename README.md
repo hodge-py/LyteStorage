@@ -6,17 +6,23 @@
 
 <h3 align="center"><b>Light-weight self-hosted photo storage management system - Specialized for low RAM usage and stability</b></h3>
 
-## Installation Instructions
+# Installation Instructions
+
+The follow details the installation process for all systems. Windows, Mac and Linux.
+
+## Docker Desktop
 
 Docker Desktop is required to self host.
 
 <a href="https://www.docker.com/products/docker-desktop/">Docker Desktop Link</a>
 
+## App
+
 Download a zip of the repo from the release section
 
 or
 
-clone the repo if you want the cutting edge.
+clone the repo if you want the cutting edge. *disclaimer: may be buggy.
 
 ```terminal
 https://github.com/hodge-py/LyteStorage.git
@@ -25,20 +31,46 @@ https://github.com/hodge-py/LyteStorage.git
 Open the terminal and navigate to the folder containing the repo.
 
 ```terminal
-docker-compose build --no-cache
+docker compose build --no-cache
 ```
 
 ```terminal
-docker-compose up -d
+docker compose up -d
 ```
 
 As easy as that.
 
-<h2 align="center">Performance</h2>
+To shutdown the app run:
 
-<div align="center">
+```terminal
+docker compose down
+```
+
+# Performance
+
+Idle performance of LyteStorage on radxa rock 3c rk3566 with 2GB of RAM.
+
+<div align="">
 <img width="666" height="158" alt="image" src="https://github.com/user-attachments/assets/8a6de28f-6f1a-4b95-905f-2ea684ee2fa5" />
 </div>
 
-<h2 align="center">RoadMap</h2>
-- Add API to sync from desktop
+# RoadMap
+
+### In no particular order
+
+* Main App
+  * Image Searching
+  * Location Mapping
+  * Improve Performance
+  * Other file types
+* Desktop
+  * Add desktop API for easy syncing
+  * Automatic syncing
+* Android/IOS
+  * App for automatic syncing
+
+# Gallery
+
+![alt text](./gallery/image.png)
+
+![alt text](./gallery/2image.png)
