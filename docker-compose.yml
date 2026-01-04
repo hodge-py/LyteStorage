@@ -4,10 +4,12 @@ services:
     image: nginx:alpine
     container_name: web_server
     ports:
-      - "${PORT}:80"
+      - "${PORT}:${PORT}"
     volumes:
       - ./PHP:/var/www/html
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    environment:
+      - Port=${PORT}
     depends_on:
       - php
     restart: unless-stopped
