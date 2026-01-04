@@ -1,0 +1,11 @@
+FROM nginx:alpine
+
+# Copy your template so Railway's $PORT works
+COPY nginx.conf.template /etc/nginx/templates/default.conf.template
+
+COPY ./PHP /var/www/html
+
+# Force the permissions so Nginx can read the files
+RUN chmod -R 755 /var/www/html && chown -R nginx:nginx /var/www/html
+
+EXPOSE $PORT

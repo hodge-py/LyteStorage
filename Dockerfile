@@ -37,6 +37,10 @@ RUN apk add --no-cache shadow && \
 
 WORKDIR /var/www/html
 
+RUN mkdir -p /var/www/html/server/images && \
+    chown -R www-data:www-data /var/www/html/server/images && \
+    chmod -R 775 /var/www/html/server/images
+
 EXPOSE 9000
 
 CMD ["php-fpm"]
