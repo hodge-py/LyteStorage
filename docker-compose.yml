@@ -19,7 +19,6 @@ services:
     container_name: php_processor
     volumes:
       - ./PHP:/var/www/html
-      - ./PHP:/var/www/html/server/images
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
