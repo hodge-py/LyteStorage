@@ -6,9 +6,9 @@ services:
       dockerfile: Dockerfile.nginx
     container_name: web_server_lytestorage
     ports:
-      - "${PORT:-8082}:${PORT:-8082}"
+      - "${PORT:-8080}:${PORT:-8080}"
     environment:
-      - PORT=${PORT:-8082}
+      - PORT=${PORT:-8080}
     depends_on:
       - php
     restart: unless-stopped
@@ -19,6 +19,11 @@ services:
     container_name: php_processor
     volumes:
       - ./PHP:/var/www/html
+    entrypoint: >
+      sh -c "mkdir -p /var/www/html/server/images && 
+             chown -R www-data:www-data /var/www/html/server/images && 
+             chmod -R 777 /var/www/html/server/images && 
+             php-fpm"
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}

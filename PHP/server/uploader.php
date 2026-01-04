@@ -12,6 +12,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!is_dir($directory)) {
         mkdir($directory, 0777, true);
     }
+    else{
+        chmod($directory, 0777);
+    }
     
     
     $sql = "INSERT INTO photos (user_id, filename, filepath, filesize, capture_date) values (:id, :filename, :filepath, :filesize, :capture_date)";

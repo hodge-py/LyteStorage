@@ -1,3 +1,5 @@
+console.log("Dashboard JS loaded.");
+
 document.addEventListener('DOMContentLoaded', (event) => {
             // This runs after the main HTML is parsed
             const photoContainer = document.getElementById('photo-container');

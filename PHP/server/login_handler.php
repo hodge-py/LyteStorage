@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['username'] = $username;
                 $_SESSION['id'] = $user['id'];
 
-                header("Location: ../view/dashboard.php"); 
+                header("Location: ../../view/dashboard.php"); 
                 exit; 
             } else {
                 echo "<h2>Login Failed</h2>";
