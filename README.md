@@ -8,7 +8,7 @@
 
 # Installation Instructions
 
-The follow details the installation process for all systems. Windows, Mac and Linux.
+The follow details the installation process for all systems. Windows, Mac and Linux
 
 ## Docker Desktop
 
@@ -22,13 +22,13 @@ Download a zip of the repo from the release section
 
 or
 
-clone the repo if you want the cutting edge. *disclaimer: may be buggy.
+clone the repo if you want the cutting edge. *disclaimer: may be buggy
 
 ```terminal
 https://github.com/hodge-py/LyteStorage.git
 ```
 
-Open the terminal and navigate to the folder containing the repo.
+Open the terminal and navigate to the folder containing the repo
 
 ```terminal
 docker compose build --no-cache
@@ -38,9 +38,22 @@ docker compose build --no-cache
 docker compose up -d
 ```
 
-As easy as that.
+As easy as that
 
-To access the site simply type in the local IP address of the device hosting.
+An .env file will need to be included in the root of the folder and will be used to set the database credentials
+
+```shell
+MYSQL_ROOT_PASSWORD=root_password
+MYSQL_DATABASE=my_database
+MYSQL_USER=my_user
+MYSQL_PASSWORD=my_password
+PMA_HOST=db
+MYSQL_ROOT=root
+```
+
+Change these to your own custom values
+
+To access the site simply type in the local IP address of the device hosting
 
 IP Commands:
 
@@ -62,7 +75,7 @@ or
 ipconfig
 ```
 
-IP address may be available in the settings of your operating system.
+IP address may be available in the settings of your operating system
 
 To shutdown the app run:
 

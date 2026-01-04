@@ -1,26 +1,20 @@
 <?php
 
-
-
-define('DB_SERVER', 'db');
-define('DB_USERNAME', 'root'); // CHANGE THIS
-define('DB_PASSWORD', 'root_password'); // CHANGE THIS
-define('DB_NAME', 'my_database');   // CHANGE THIS
+$host = getenv('PMA_HOST');
+$user = getenv('MYSQL_USER'); 
+$password = getenv('MYSQL_PASSWORD'); 
+$database = getenv('MYSQL_DATABASE');   
 
 try {
-    // Create DSN (Data Source Name) string for connection
-    $dsn = "mysql:host=" . DB_SERVER . ";dbname=" . DB_NAME . ";charset=utf8mb4";
     
-    // Create a new PDO instance
-    $pdo = new PDO($dsn, DB_USERNAME, DB_PASSWORD);
+    $dsn = "mysql:host=" . $host . ";dbname=" . $database . ";charset=utf8mb4";
     
-    // Set the PDO error mode to exception for better error handling
+    $pdo = new PDO($dsn, $user, $password);
+    
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
 } catch (PDOException $e) {
-    // If connection fails, output the error and stop the script
-    die("ERROR: Could not connect. " . $e->getMessage());
+    die("ERROR: Could not connect. " . "hey1 " . $host . $e->getMessage());
 }
 
-// $pdo variable now holds the database connection object
 ?>
