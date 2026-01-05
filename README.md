@@ -49,6 +49,7 @@ MYSQL_USER=my_user
 MYSQL_PASSWORD=my_password
 PMA_HOST=db
 MYSQL_ROOT=root
+PORT=80
 ```
 
 Change these to your own custom values
