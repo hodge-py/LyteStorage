@@ -1,3 +1,5 @@
 /.env
 /PHP/server/images/
 /PHP/server/imagesT/
+/defang.exe
+/.defang/defanguswest2
