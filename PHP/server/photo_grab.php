@@ -8,6 +8,9 @@ $directory = 'images/';
 if (!is_dir($directory)) {
     mkdir($directory, 0777, true);
 }
+else{
+    chmod($directory, 0777);
+}
 
 $sql = "SELECT filepath FROM photos WHERE user_id = :username order by capture_date desc";
 

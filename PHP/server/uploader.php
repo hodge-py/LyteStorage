@@ -8,9 +8,12 @@ require_once 'config.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $directory = 'images/';
+    $directory = __DIR__ . '/images/';
     if (!is_dir($directory)) {
         mkdir($directory, 0777, true);
+    }
+    else{
+        chmod($directory, 0777);
     }
     
     
@@ -56,7 +59,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $capture_date = date('Y-m-d H:i:s');
                 }
 
-                if (move_uploaded_file($tmpPath, $newName)) {
+                $totalPath = __DIR__ . "/" . $newName;
+
+                if (move_uploaded_file($tmpPath, $totalPath)) {
                     $uploaded[] = $newName;
                 } else {
                     $errors[] = "Failed to move: " . $_FILES['files']['name'][$i];

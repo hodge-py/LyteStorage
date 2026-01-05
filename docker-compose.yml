@@ -1,13 +1,16 @@
 services:
   # The Web Server (Handles incoming traffic)
-  nginx:
-    image: nginx:alpine
-    container_name: web_server
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    container_name: web_server_lytestorage
     ports:
-      - "${PORT}:80"
+      - "${PORT:-8080}:${PORT:-8080}"
     volumes:
       - ./PHP:/var/www/html
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    environment:
+      - PORT=${PORT:-8080}
     depends_on:
       - php
     restart: unless-stopped
@@ -18,12 +21,17 @@ services:
     container_name: php_processor
     volumes:
       - ./PHP:/var/www/html
+    command: >
+      sh -c "mkdir -p /var/www/html/server/images && 
+             chmod -R 777 /var/www/html && 
+             chown -R www-data:www-data /var/www/html && 
+             php-fpm"
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       PMA_HOST: ${PMA_HOST}
-    restart: unless-stopped
+    restart: always
 
   # The Database
   db:
@@ -46,7 +54,7 @@ services:
   phpmyadmin:
     image: phpmyadmin:latest
     ports:
-      - "8080:80"
+      - "8081:80"
     environment:
       PMA_HOST: ${PMA_HOST}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}

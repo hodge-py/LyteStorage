@@ -1,0 +1,28 @@
+server {
+    listen ${PORT};
+    server_name localhost;
+    sendfile off;
+    tcp_nopush off;
+    tcp_nodelay on;
+
+    root /var/www/html;
+    index index.php index.html;
+
+    # Matches your PHP 200GB+ upload limits
+    client_max_body_size 0; 
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass php:9000;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        
+        # Matches your PHP 600000s timeouts
+        fastcgi_read_timeout 3600;
+        fastcgi_send_timeout 3600;
+    }
+}
