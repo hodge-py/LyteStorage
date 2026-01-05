@@ -1,10 +1,7 @@
 server {
     listen ${PORT};
     server_name localhost;
-    sendfile off;
-    tcp_nopush off;
-    tcp_nodelay on;
-
+    
     root /var/www/html;
     index index.php index.html;
 
