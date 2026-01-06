@@ -1,16 +1,19 @@
 
+let currentDirectory = null
+
 document.addEventListener('DOMContentLoaded', (event) => {
             const table = document.getElementById('mainTable');
             fetch('../server/fileGrab.php')
                 .then(response => response.json())
                 .then(data => {
-                console.log(data);
+                currentDirectory = data + '/root/'
                 const newhtml = `<tr>
-                <td name='root'>📁root</td>
+                <td></td>
                 <td></td>
                 <td></td>
                 </tr>
                 `
+                //console.log(currentDirectory)
                 table.insertAdjacentHTML('beforeend',newhtml)
         })
                 .catch(error => {
@@ -30,7 +33,6 @@ function handleLogout() {
 
 let row = null;
 document.getElementById("mainTable").addEventListener('click', event => {
-    
     if (event.detail === 1) {
         //console.log(event.target.parentNode)
         if (row == null){
@@ -52,10 +54,41 @@ document.getElementById("mainTable").addEventListener('click', event => {
 
     } else if (event.detail === 2) {
         const child = event.target.parentNode.firstElementChild;
-
-        console.log(child.getAttribute('name'));
+        
+        
 
 
     }
+
+})
+
+document.getElementById('addFolder').addEventListener('click', async event => {
+        data = {"dir": currentDirectory}
+    
+        const response = await fetch("../server/createDir.php", {
+      method: 'POST', // Specify the method
+      headers: {
+        'Content-Type': 'application/json' 
+      },
+      body: JSON.stringify(data) 
+        });
+
+   
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const responseData = await response.json(); 
+    console.log('Success:', responseData);
+    const newhtml = `<tr>
+                <td name=${responseData}>${responseData}</td>
+                <td></td>
+                <td></td>
+                </tr>
+                `
+                
+                table.insertAdjacentHTML('beforeend',newhtml)
+
+
 
 })

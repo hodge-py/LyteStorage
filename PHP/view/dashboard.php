@@ -29,9 +29,9 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
             <div id="fileHeader">
                 <button><</button>
                 <button>></button>
-                <button>&plus; Folder</button>
+                <button id="addFolder">&plus; Folder</button>
                 <div id="CurrentDirectory">
-                    C:/
+                    C:/root
                 </div>
             </div>
 
