@@ -12,8 +12,18 @@ require_once 'config.php';
 //$stmt->execute($data);
 
 //$filePath = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$dir = "./allUsers/" . $_SESSION['username'] . "/root";
 
-echo json_encode($_SESSION['username']);
+$contents = scandir($dir);
+
+$filesAndFolders = array_diff($contents, array('.', '..'));
+
+$data = array(
+    "files" => $filesAndFolders,
+    "dir" => $dir
+);
+
+echo json_encode($data);
 
 
 ?>

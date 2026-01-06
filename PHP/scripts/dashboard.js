@@ -6,15 +6,21 @@ document.addEventListener('DOMContentLoaded', (event) => {
             fetch('../server/fileGrab.php')
                 .then(response => response.json())
                 .then(data => {
-                currentDirectory = data + '/root/'
-                const newhtml = `<tr>
-                <td></td>
+                currentDirectory = data['dir']
+                console.log(data)
+                files = data['files']
+                total = ``
+                for (const [key,value] of Object.entries(files)){
+                    total += `<tr>
+                <td name=${value}>📁${value}</td>
                 <td></td>
                 <td></td>
                 </tr>
                 `
-                //console.log(currentDirectory)
-                table.insertAdjacentHTML('beforeend',newhtml)
+                };
+
+                table.insertAdjacentHTML('beforeend',total)
+
         })
                 .catch(error => {
                     console.error('Error fetching PHP script:', error);
@@ -81,14 +87,14 @@ document.getElementById('addFolder').addEventListener('click', async event => {
     const responseData = await response.json(); 
     console.log('Success:', responseData);
     const newhtml = `<tr>
-                <td name=${responseData}>${responseData}</td>
+                <td name=${responseData}>📁${responseData}</td>
                 <td></td>
                 <td></td>
                 </tr>
                 `
-                
-                table.insertAdjacentHTML('beforeend',newhtml)
-
-
+    const table = document.getElementById('mainTable');
+    table.insertAdjacentHTML('beforeend',newhtml);
 
 })
+
+

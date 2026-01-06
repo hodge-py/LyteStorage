@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $unique = uniqid();
 
-    $dir = "./allUsers/" . $data['dir'] . "/" . $unique;
+    $dir = $data['dir'] . "/" . $unique;
 
     mkdir($dir,0777);
 
