@@ -33,6 +33,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['username'] = $username;
                 $_SESSION['id'] = $user['id'];
 
+                $directory = "allUsers/" . $username . '/';
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777, true);
+                    mkdir($directory . "/root", 0777, true);
+                }
+                else{
+                    chmod($directory, 0777);
+                }
+
                 header("Location: ../../view/dashboard.php"); 
                 exit; 
             } else {
