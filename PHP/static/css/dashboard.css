@@ -22,7 +22,7 @@ body {
     background-color: rgba(199, 199, 199, 0.07);
     border: 1px solid rgba(0, 242, 255, 0.2);
     border-radius: 8px;
-    padding: 10px;
+    padding: 0;
 }
 
 #title { color: white; 
@@ -58,4 +58,67 @@ body {
 
 #logoutButton:hover {
     background-color: #4d0000; 
+}
+
+#fileHeader {
+    display: flex;
+    border-bottom: 1px solid grey;
+    height: 5vh;
+    margin: 0;
+    padding: 5px 10px;
+    align-items: center;
+    column-gap: 10px;
+}
+
+#CurrentDirectory{
+    width: 40vw;
+    border: 1px solid rgba(0, 242, 255, 0.2);
+    color:aliceblue;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+#tableContainer {
+    overflow-y: scroll;
+    height: 77vh;
+}
+
+#mainTable {
+    text-align: left;
+    width: 90vw;
+    color: aliceblue;
+    padding: 10px;
+    -webkit-user-select: none; /* Safari */
+    user-select: none; /* Standard syntax */
+}
+
+tr:focus {
+    outline: none;
+}
+
+tr:focus, tr.active-row {
+    background: rgba(0, 242, 255, 0.1);
+    border-left: 3px solid #00f2ff;
+    box-shadow: inset 10px 0 15px -10px rgba(0, 242, 255, 0.5);
+    transition: all 0.2s ease;
+}
+
+:root {
+  scrollbar-color: #555 #1e1e1e; /* thumb color, track color */
+  scrollbar-width: thin; /* auto or thin */
+}
+
+/* For Chrome, Edge, and Safari */
+:root::-webkit-scrollbar {
+  width: 12px; /* width of the vertical scrollbar */
+}
+
+:root::-webkit-scrollbar-track {
+  background: #1e1e1e; /* color of the track (background) */
+}
+
+:root::-webkit-scrollbar-thumb {
+  background-color: #555; /* color of the thumb (draggable handle) */
+  border-radius: 6px; /* rounded corners for the thumb */
+  border: 2px solid #1e1e1e; /* creates space around the thumb */
 }

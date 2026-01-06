@@ -26,16 +26,27 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
 
     <div class="container">
         <div id="fileSystem">
-            <div id="file header">
-                
+            <div id="fileHeader">
+                <button><</button>
+                <button>></button>
+                <button>&plus; Folder</button>
+                <div id="CurrentDirectory">
+                    C:/
+                </div>
             </div>
 
+            <div id="tableContainer">
+                <table id="mainTable">
+                    <tr>
+                        <th class="column" id="nameColumn">Name</th>
+                        <th class="column" id="typeColumn">Type</th>
+                        <th class="column" id="sizeColumn">Size</th>
+                    </tr>
 
 
+                </table>
+            </div>
         </div>
-       
-
-    
     </div>
 
 </body>
